@@ -1,0 +1,79 @@
+.landingPageText_outerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 100px;
+    height: 600px;
+}
+
+
+.intro-section {
+    color: #fff;
+    padding: 80px 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    max-width: 700px;
+    width: 90%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Container zum Zentrieren des Textes */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Stil für die Hauptüberschrift */
+.heading {
+    font-size: 48px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    animation: slideIn 1s ease-out 0s forwards;
+}
+
+/* Stil für die Subheading */
+.subheading {
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+    opacity: 0.85;
+    animation: slideIn 1s ease-out 0s forwards;
+}
+
+/* Stil für den Standorttext */
+.location {
+    font-size: 20px;
+    font-weight: 300;
+    opacity: 0.75;
+    animation: slideIn 1s ease-out 0s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%); /* Startposition außerhalb des Bildschirms auf der rechten Seite */
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0); /* Endposition in der Mitte */
+        opacity: 1;
+    }
+}
+
+/* Responsivität */
+@media (max-width: 600px) {
+    .heading {
+        font-size: 36px;
+    }
+    .subheading {
+        font-size: 20px;
+    }
+    .location {
+        font-size: 18px;
+    }
+}

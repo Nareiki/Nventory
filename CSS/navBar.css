@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.navBar_Body {
+    display: flex;
+    justify-content: center;
+    margin: 50px;
+}
+
+.navBar_outerContainer {
+    width: 600px;
+    height: 50px;
+    display: flex;
+    background: rgb(55,55,55);
+    background: linear-gradient(171deg, rgba(55,55,55,1) 0%, rgba(64,64,64,1) 35%, rgba(88,88,88,1) 100%);
+    border-radius: 2rem;
+
+}
+
+.navBar_Item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    font-size: 14px;
+    color: #FBF5E5;
+}

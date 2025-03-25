@@ -1,0 +1,88 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+.statisticsContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
+
+.iconOnCard {
+    height: 70px;
+    opacity: 30%;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    position: relative;
+    margin: 5px;
+}
+
+.card:hover {
+    scale: 1.008;
+    transition: ease 0.5s;
+}
+
+
+
+.icon {
+    font-size: 24px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.number {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    font-size: 70px;
+    color: #eee;
+    font-weight: bold;
+}
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 30px 0;
+}
+.list {
+    margin-top: 30px;
+    list-style: none;
+    padding: 0;
+}
+.list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.list li::before {
+    content: '\2713';
+    color: #4CAF50;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.details {
+    margin-top: 50px;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.details:hover {
+    opacity: 80%;
+    transition: ease 0.3s;
+}
