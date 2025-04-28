@@ -14,7 +14,6 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    height: 400px;
 }
 
 .iconOnCard {
@@ -38,8 +37,6 @@ body {
     scale: 1.008;
     transition: ease 0.5s;
 }
-
-
 
 .icon {
     font-size: 24px;
@@ -86,3 +83,21 @@ body {
     opacity: 80%;
     transition: ease 0.3s;
 }
+
+@keyframes autoShowAnimation {
+    from {
+        opacity: 0;
+        transform: translateY(200px) scale(0.3);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+.autoShow {
+   animation: autoShowAnimation both;
+   animation-timeline: view(70% 5%);
+}
+
