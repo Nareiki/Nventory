@@ -1,5 +1,5 @@
 <?php include "HTML/header.html" ?>
-<?php include"navBar.html" ?>
+<?php include "HTML/navBar.html" ?>
 <?php include"landingPage_Text.html" ?>
 <?php include"section0.html" ?>
 
