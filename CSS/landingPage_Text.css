@@ -2,24 +2,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 100px;
     height: 600px;
+    margin-right: 20px;
+    margin-left: 20px;
 }
 
 
 .intro-section {
     color: #fff;
-    padding: 80px 40px;
     border-radius: 15px;
     text-align: center;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
     max-width: 700px;
-    width: 90%;
+    width: 100%;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Container zum Zentrieren des Textes */
 .container {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -65,15 +65,3 @@
     }
 }
 
-/* Responsivität */
-@media (max-width: 600px) {
-    .heading {
-        font-size: 36px;
-    }
-    .subheading {
-        font-size: 20px;
-    }
-    .location {
-        font-size: 18px;
-    }
-}
