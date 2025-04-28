@@ -17,22 +17,30 @@ a:hover {
 .headerContainer{
     display: flex;
     justify-content: center;
-    background-color: #212121;
+  //  background-color: #212121;
     height: 100px;
     width: 100%;
     color: #FBF5E5;
 }
 
-.headerItem{
+.headerItemRight{
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    width: 400px;
     height: 100px;
     margin-left: 10px;
-    margin-right: 10px;
+    margin-right: 50px;
+    filter: invert(1);
 }
 
+.headerItemLeft{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100px;
+    margin-left: 50px;
+    margin-right: 10px;
+}
 
 .headerItemMiddle{
     display: flex;
@@ -43,4 +51,5 @@ a:hover {
     height: 100px;
     margin-left: 10px;
     margin-right: 10px;
+    filter: invert(1);
 }
