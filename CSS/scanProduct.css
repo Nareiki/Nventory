@@ -1,0 +1,114 @@
+body {
+    background-image: url("../pictures/backgorundLanding.jpg");
+    background-repeat: no-repeat;
+    background-size: 1920px;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+
+.outerContainer {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    height: 100vh;
+    box-sizing: border-box;
+    text-align: center;
+    margin: 30px;
+}
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: 5px;
+}
+
+.section {
+    background-color: #f3efe5;
+    padding: 50px 30px;
+    border-radius: 0.25em;
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.25);
+}
+
+#my-qr-reader {
+    padding: 20px !important;
+    border-radius: 8px;
+}
+
+#my-qr-reader img[alt="Info icon"] {
+    display: none;
+}
+
+#my-qr-reader img[alt="Camera based scan"] {
+    width: 100px !important;
+    height: 100px !important;
+}
+
+button {
+    padding: 10px 20px;
+    border: 1px solid #b2b2b2;
+    outline: none;
+    border-radius: 0.25em;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    background-color: #959595;
+    transition: 0.3s background-color;
+}
+
+button:hover {
+    background-color: #757575;
+}
+
+#html5-qrcode-anchor-scan-type-change {
+    text-decoration: none !important;
+    color: #686868;
+}
+
+video {
+    width: 100% !important;
+    border: 1px solid #b2b2b2 !important;
+    border-radius: 0.25em;
+}
+
+.articleOuterContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.articleBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    background-color: #2a2d34;
+    background: linear-gradient(145deg, #2a2d34, #383c47);
+    padding: 2rem;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15),
+    0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.articleBox:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2),
+    0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Optionale verbesserte Typografie */
+.articleBox h2 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.articleBox p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+}
