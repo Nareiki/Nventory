@@ -2,7 +2,7 @@
   "name": "Nventory",
   "version": "1.0.0",
   "description": "",
-  "main": "header.js",
+  "main": "JAVASCRIPT/header.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
