@@ -1,50 +1,137 @@
-* {
-    margin: 0;
-    padding: 0;
+
+
+body {
+    color: #333;
+    line-height: 1.6;
+    background-color: #efedea;
 }
 
-
-.addProduct_outerContainer {
+/* Container-Styles */
+.container {
+    margin: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: lightgrey;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.form-container {
+    background-color: #ffffff;
     width: 100%;
-    height: 500px;
-
+    max-width: 450px;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
-.addProduct_innerContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.24);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.48);
-    width: 50%;
-    height: 80%;
+/* Überschriften und Text */
+h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 10px;
 }
 
-.inputContainer {
-    width: 50%;
-    height: 40px;
-    margin: 10px;
+.subtitle {
+    color: #718096;
+    margin-bottom: 30px;
+    font-size: 16px;
 }
 
-.inputField {
+/* Formular-Elemente */
+.form-group {
+    margin-bottom: 24px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #4a5568;
+    font-size: 15px;
+}
+
+input[type="number"] {
+    width: 20%;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    color: #2d3748;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+input[type="text"] {
+    width: 90%;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    color: #2d3748;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    background-color: #fff;
+}
+
+/* Button-Styling */
+.submit-btn {
+    display: block;
     width: 100%;
-    height: 100%;
-    border-radius: 1rem;
-    background-color: #a1a1a1;
-    border-color: white;
-    border-style: solid;
+    padding: 14px;
+    background-color: #959595;
     color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.inputField:focus {
-    background-color: #5a5a5a;
+.submit-btn:hover {
+    background-color: #757575;
 }
+
+.download-btn {
+    border: none;
+
+}
+
+.changeStock {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 14px;
+    color: #718096;
+}
+
+.changeStock a {
+    color: #3182ce;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.changeStock a:hover {
+    color: #2c5282;
+    text-decoration: underline;
+}
+
+.qr-code {
+    margin-top: 50px;
+}
+
+
+
+
+
+
+
