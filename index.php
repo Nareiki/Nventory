@@ -5,6 +5,7 @@
 <?php include "HTML/whatWeDo.html" ?>
 <?php include "HTML/startNowItem.html" ?>
 <?php include "HTML/faq.html" ?>
+<?php include "HTML/contact.html" ?>
 
 
 <!DOCTYPE html>
