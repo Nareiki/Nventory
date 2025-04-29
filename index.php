@@ -4,6 +4,7 @@
 <?php include "HTML/section0.html" ?>
 <?php include "HTML/whatWeDo.html" ?>
 <?php include "HTML/startNowItem.html" ?>
+<?php include "HTML/faq.html" ?>
 
 
 <!DOCTYPE html>
