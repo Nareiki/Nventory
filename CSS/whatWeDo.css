@@ -1,0 +1,44 @@
+.textOuterContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.textContainer {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    max-width: 700px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.text {
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+    opacity: 0.85;
+    color: black;
+}
+
+.autoBlur {
+    animation: autoBlurAnimation linear both;
+    animation-timeline: view();
+}
+
+@keyframes autoBlurAnimation {
+    0% {
+        opacity: 5%;
+    } 20% {
+        opacity: 5%;
+          } 40%, 60% {
+    opacity: 100%;
+          } 80% { opacity: 5%  } 100% {
+    opacity: 5%;
+   }
+}
