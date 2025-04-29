@@ -6,6 +6,7 @@
 <?php include "HTML/startNowItem.html" ?>
 <?php include "HTML/faq.html" ?>
 <?php include "HTML/contact.html" ?>
+<?php include "HTML/footer.html" ?>
 
 
 <!DOCTYPE html>
