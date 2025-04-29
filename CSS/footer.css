@@ -1,0 +1,51 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+.footerOuterContainer {
+    height: 250px;
+    background-color: #212121;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.footerInnerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20%;
+    width: 80%;
+}
+
+.footerIcon {
+    height: 30px;
+    margin: 15px;
+    filter: invert(1);
+}
+
+.footerItem {
+    margin: 5px;
+    color: white;
+}
+
+.footerTextSmall {
+    font-size: 12px;
+    color: white;
+    opacity: 70%;
+}
+
+@media screen and (max-width: 450px) {
+    .footerItem {
+        font-size: 12px;
+    }
+}
+
