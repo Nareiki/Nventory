@@ -3,6 +3,7 @@
 <?php include "HTML/landingPage_Text.html" ?>
 <?php include "HTML/section0.html" ?>
 <?php include "HTML/whatWeDo.html" ?>
+<?php include "HTML/startNowItem.html" ?>
 
 
 <!DOCTYPE html>
