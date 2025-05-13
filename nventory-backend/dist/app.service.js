@@ -12,6 +12,9 @@ let AppService = class AppService {
     getHello() {
         return 'Hello World!';
     }
+    getDataBaseConnection() {
+        return 'Database connection established!';
+    }
 };
 exports.AppService = AppService;
 exports.AppService = AppService = __decorate([
