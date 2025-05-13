@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HOMEPAGE</title>
-  <link rel="stylesheet" href="../CSS/whatWeDo.css">
-</head>
-<body>
 <div class = "textOuterContainer">
     <div class="textContainer autoBlur">
       <p class="text">A specialized team of 5 industry experts works on Nventory around the clock, driving continuous innovation.</p>
@@ -18,7 +10,4 @@
     <p class="text">We demonstrate how Nventory transforms inventory management,
       revealing possibilities that businesses never imagined possible.</p>
   </div>
-
 </div>
-</body>
-</html>

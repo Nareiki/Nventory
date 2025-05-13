@@ -1,4 +1,5 @@
-<?php require_once 'connection.php';
+<?php
+require_once __DIR__ . '/connection.php';
 
 // Verbindung zur Datenbank herstellen
 $conn = getDBConnection();
@@ -16,22 +17,13 @@ if ($result) {
     $rowCount["anzahl"] = "keine Artikel vorhanden";
 }
 
-
+$pageTitle  = 'Persönliches Dashboard';
+$pageStyles = ['/CSS/personalDashboard.css'];
+ob_start();
 ?>
 
-
-
-
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Nventory</title>
-        <link rel="stylesheet" href="CSS/personalDashboard.css">
-    </head>
-    <body>
     <div class = "dashboardHeaderContainer">
-        <div class = "dashboardHeaderItem"><a href="index.php"><img src="pictures/Nventory_Logo.png" height=" 40px" ></a></div>
+        <div class = "dashboardHeaderItem"><a href="index.php"><img src="/pictures/Nventory_Logo.png" height=" 40px" ></a></div>
     </div>
     <div class = dashboardOuterContainer>
         <div class = "sideBarOuterContainer">
@@ -72,12 +64,12 @@ if ($result) {
             </div>
         </div>
     </div>
-    </body>
-    </html>
 
     <script
-        src="JAVASCRIPT/personalDashboard.js">
+        src="/JAVASCRIPT/personalDashboard.js">
     </script>
 
-<?php include("HTML/footer.html") ?>
+<?php
+$content = ob_get_clean();
+include __DIR__.'/layout.php';
 

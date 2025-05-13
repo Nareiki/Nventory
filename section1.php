@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Sec1</title>
-    <link rel="stylesheet" href="CSS/section1.css">
-</head>
-<body>
-<div class = "productHeadline"></div>
 
+<div class = "productHeadline"></div>
 <div class = "productContainer">
   <div class = "product"><div class = "productName">Servas</div><div class ="productPicture"></div><div class ="productInformation">HALLO</div></div>
   <div class = "product">2</div>
@@ -25,6 +17,3 @@
   <div class = "product">2</div>
   <div class = "product">3</div>
 </div>
-
-</body>
-</html>
