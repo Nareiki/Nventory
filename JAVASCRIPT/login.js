@@ -30,20 +30,19 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault(); // Verhindert das standardmäßige Absenden des Formulars
 
         // Formular-Daten sammeln
-        const formData = {
-            email: document.getElementById('email').value,
-            password: document.getElementById('password').value,
-            remember: document.getElementById('remember').checked
-        };
+        const formData = new FormData();
+        formData.append('username', document.getElementById('username').value);
+        formData.append('password', document.getElementById('password').value);
+        formData.append('remember', document.getElementById('remember').checked ? '1' : '0');
 
         // Hier würde normalerweise der Code zum Senden der Daten an einen Server stehen
         // und die Authentifizierungslogik
 
         // Zu Demonstrationszwecken zeigen wir nur eine Erfolgsmeldung in der Konsole
-        console.log('Login-Versuch:', formData.email);
+        console.log('Login-Versuch:', formData.username);
 
         // Simulierte Anmeldung (in einer echten Anwendung würde hier eine API-Anfrage erfolgen)
-        simulateLogin(formData.email);
+        login(formData);
     });
 
     // Optionale Funktion: Validierung während der Eingabe
@@ -64,26 +63,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Simulation einer Login-Anfrage (nur für Demo-Zwecke)
-    function simulateLogin(email) {
+    async function login(formData) {
         // Simuliere einen Ladevorgang
         const submitBtn = document.querySelector('.submit-btn');
         submitBtn.textContent = 'Wird angemeldet...';
         submitBtn.disabled = true;
 
-        // Timeout simuliert eine Netzwerkanfrage
-        setTimeout(() => {
-            // In einer echten Anwendung würde hier die Antwort vom Server verarbeitet
-            if (email.includes('@')) {
-                // Erfolgreicher Login
-                alert('Login erfolgreich! Du wirst weitergeleitet...');
-                // Hier würde normalerweise eine Weiterleitung erfolgen
-                // window.location.href = 'dashboard.html';
-            } else {
-                // Fehlgeschlagener Login
-                alert('Login fehlgeschlagen. Bitte überprüfe deine Zugangsdaten.');
-                submitBtn.textContent = 'Anmelden';
-                submitBtn.disabled = false;
-            }
-        }, 1500);
+    try {
+        const response = await fetch('./api/login.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Login erfolgreich! Du wirst weitergeleitet...');
+            window.location.href = './personalDashboard.php';
+        } else {
+            alert(data.message || 'Login fehlgeschlagen. Bitte überprüfe deine Zugangsdaten.');
+            submitBtn.textContent = 'Anmelden';
+            submitBtn.disabled = false;
+        }
+    } catch (error) {
+        console.error('Fehler beim Login:', error);
+        alert('Ein Fehler ist aufgetreten. Bitte versuche es später erneut.');
+        submitBtn.textContent = 'Anmelden';
+        submitBtn.disabled = false;
+    }
     }
 });

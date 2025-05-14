@@ -66,3 +66,23 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `userID` int NOT NULL AUTO_INCREMENT,
+  `firstname`varchar(100) NOT NULL,
+  `lastname` varchar(100) NOT NULL,
+  `company` varchar(100),
+  `email` varchar(100) UNIQUE NOT NULL,
+  `userName` varchar(100) DEFAULT NULL,
+  `userPassword` text,
+  `warehouseID` int DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1
+  PRIMARY KEY (`userID`),
+  UNIQUE KEY `userID` (`userID`),
+  KEY `warehouseID` (`warehouseID`),
+  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`warehouseID`) REFERENCES `warehouse` (`warehouseID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;

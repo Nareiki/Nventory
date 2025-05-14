@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Nventory</title>
-    <link rel="stylesheet" href="/CSS/login.css">
+    <link rel="stylesheet" href="CSS/login.css">
 </head>
 <body>
 <div class="container">
@@ -15,8 +15,8 @@
 
         <form id="login-form" action="#" method="POST">
             <div class="form-group">
-                <label for="email">E-Mail</label>
-                <input type="email" id="email" name="email" placeholder="deine@email.com" required>
+                <label for="username">Benutzername:</label>
+                <input type="text" id="username" name="username" placeholder="max_mustermann" required><br> 
             </div>
 
             <div class="form-group password-group">
@@ -41,7 +41,7 @@
         </form>
 
         <div class="signup-link">
-            <p>Noch kein Konto? <a href="register.php">Jetzt registrieren</a></p>
+            <p>Noch kein Konto? <a href="registerPage.php">Jetzt registrieren</a></p>
         </div>
     </div>
 </div>
