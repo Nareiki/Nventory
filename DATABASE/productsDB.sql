@@ -66,9 +66,6 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-<<<<<<< Updated upstream
-=======
-
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -97,4 +94,3 @@ CREATE TABLE `transaktions` (
   `Menge` int(11) DEFAULT NULL CHECK (`Menge` >= 0), 
   `Verkaufspreis` decimal(10,2) DEFAULT NULL CHECK (`Verkaufspreis` >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
->>>>>>> Stashed changes
