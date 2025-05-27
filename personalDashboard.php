@@ -43,7 +43,7 @@ if ($result) {
                 <a href="#"><img src="pictures/icons/chart-simple-solid.svg" height="30px"></a>
             </div>
             <div class="sidebarItem" data-hover="STATISTIK">
-                <a href="#"><img src="pictures/icons/chart-simple-solid.svg" height="30px"></a>
+                <a href="./stats.php"><img src="pictures/icons/chart-simple-solid.svg" height="30px"></a>
             </div>
             <div class="sidebarItem" data-hover="EINSTELLUNGEN">
                 <a href="#"><img src="pictures/icons/chart-simple-solid.svg" height="30px"></a>
