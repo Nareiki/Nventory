@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CatsModule } from './cats/cats.module';
 import { Warehouse } from './entities/warehouse.entity';
 import { WarehouseModule } from './core/warehouse/warehouse.module';
+import { WarehouseHttpModule } from './http/warehouse-http/warehouse-http.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { WarehouseModule } from './core/warehouse/warehouse.module';
     }),
     CatsModule,
     WarehouseModule,
+    WarehouseHttpModule
   ],
   controllers: [AppController],
   providers: [AppService],
