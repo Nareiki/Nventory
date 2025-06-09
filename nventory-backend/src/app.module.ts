@@ -8,13 +8,13 @@ import { WarehouseModule } from './core/warehouse/warehouse.module';
 import { WarehouseHttpModule } from './http/warehouse-http/warehouse-http.module';
 import { ShelfModule } from './core/shelf/shelf.module';
 import { ShelfHttpModule } from './http/shelf-http/shelf-http.module';
-import { ShelfController } from './http/shelf-http/shelf.controller';
 import { ArticleHttpModule } from './http/article-http/article-http.module';
-import { ArticleController } from './http/article-http/article.controller';
 import { UserModule } from './core/user/user.module';
 import { UserHttpModule } from './http/user-http/user-http.module';
-import { UserController } from './http/user-http/user.controller';
 import { ArticleModule } from './core/article/article.module';
+import { Shelf } from './entities/shelf.entity';
+import { Article } from './entities/article.entity';
+import { User } from './entities/user.entity';
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { ArticleModule } from './core/article/article.module';
       username: 'root',
       password: 'P4ssw0rd12?',
       database: 'nventory',
-      entities: [Warehouse],
+      entities: [Warehouse, Shelf, Article, User],
       synchronize: true,
     }),
     CatsModule,
@@ -38,7 +38,7 @@ import { ArticleModule } from './core/article/article.module';
     UserModule,
     UserHttpModule
   ],
-  controllers: [AppController, ShelfController, ArticleController, UserController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule { }

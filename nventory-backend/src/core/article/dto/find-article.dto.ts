@@ -5,4 +5,6 @@ export interface FindArticleDto {
     articleInformation?: string
     articleAmount?: number
     articlePrice?: number
+    shelfId?: number
+    warehouseId?: number
 }
