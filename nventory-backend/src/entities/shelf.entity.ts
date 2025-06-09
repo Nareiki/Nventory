@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Warehouse } from "./warehouse.entity";
 
 @Entity()
 export class Shelf {
@@ -8,6 +9,7 @@ export class Shelf {
     @Column()
     warehouseID: number
 
-    @Column()
-    articleID: number
+    @ManyToOne(() => Warehouse)
+    @JoinColumn({ name: 'warehouseID' })
+    warehouse: Warehouse
 }
