@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+import { Shelf } from "./shelf.entity"
 
 @Entity()
-export class article {
+export class Article {
 
     @PrimaryGeneratedColumn()
     articleID: number
@@ -20,4 +21,8 @@ export class article {
 
     @Column()
     articlePrice: number
+
+    @ManyToOne(() => Shelf)
+    @JoinColumn({ name: 'shelfID' })
+    shelf: Shelf
 }
