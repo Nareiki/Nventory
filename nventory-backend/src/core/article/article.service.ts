@@ -43,7 +43,30 @@ export class ArticleService {
     }
 
     create(article: Article): Promise<Article> {
+        // Ensure price is rounded to 2 decimals and amount is integer
+        if (article.articlePrice !== undefined) {
+            article.articlePrice = Math.round((article.articlePrice + Number.EPSILON) * 100) / 100;
+        }
+        if (article.articleAmount !== undefined) {
+            article.articleAmount = Math.round(article.articleAmount);
+        }
         const newArticle: Article = this.articleRepository.create(article)
         return this.articleRepository.save(newArticle)
+    }
+
+    async updatePrice(id: number, articlePrice: number): Promise<Article | null> {
+        const article = await this.articleRepository.findOneBy({ articleID: id })
+        if (!article) return null
+        // Round price to 2 decimals
+        article.articlePrice = Math.round((articlePrice + Number.EPSILON) * 100) / 100;
+        return this.articleRepository.save(article)
+    }
+
+    async updateAmount(id: number, articleAmount: number): Promise<Article | null> {
+        const article = await this.articleRepository.findOneBy({ articleID: id })
+        if (!article) return null
+        // Ensure amount is integer
+        article.articleAmount = Math.round(articleAmount);
+        return this.articleRepository.save(article)
     }
 }
