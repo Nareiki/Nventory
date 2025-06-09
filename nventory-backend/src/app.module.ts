@@ -11,10 +11,10 @@ import { ShelfHttpModule } from './http/shelf-http/shelf-http.module';
 import { ShelfController } from './http/shelf-http/shelf.controller';
 import { ArticleHttpModule } from './http/article-http/article-http.module';
 import { ArticleController } from './http/article-http/article.controller';
+import { UserModule } from './core/user/user.module';
+import { UserHttpModule } from './http/user-http/user-http.module';
+import { UserController } from './http/user-http/user.controller';
 import { ArticleModule } from './core/article/article.module';
-import { ArticleModule } from './http/article-http/article/article.module';
-import { ArticleHttpModule } from './http/article-http/article-http/article-http.module';
-import { ArticleController } from './http/article-http/article/article.controller';
 
 @Module({
   imports: [
@@ -34,9 +34,11 @@ import { ArticleController } from './http/article-http/article/article.controlle
     ShelfModule,
     ShelfHttpModule,
     ArticleModule,
-    ArticleHttpModule
+    ArticleHttpModule,
+    UserModule,
+    UserHttpModule
   ],
-  controllers: [AppController, ShelfController, ArticleController],
+  controllers: [AppController, ShelfController, ArticleController, UserController],
   providers: [AppService],
 })
 export class AppModule { }
