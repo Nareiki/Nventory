@@ -1,15 +1,20 @@
-<?php
-$pageTitle  = 'Produktkarten';
-$pageStyles = ['/CSS/productCard.css'];
-ob_start();
-?>
+<?php include "header.html" ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+    <link rel="stylesheet" href="CSS/productCard.css">
+</head>
+<body>
 
 <div id="card-container" class = "outerContainer">
   <!-- Template für die Karte -->
   <template id="card-template">
     <div class="card">
       <div class="img-bx">
-        <img src="/pictures/test123.png" alt="img" />
+        <img src="pictures/test123.png" alt="img" />
       </div>
       <div class="content">
         <div class="detail">
@@ -42,8 +47,7 @@ ob_start();
   }
 </script>
 
-<script src="/JAVASCRIPT/productCard.js"></script>
 
-<?php
-$content = ob_get_clean();
-include __DIR__.'/layout.php';
+
+</body>
+</html>

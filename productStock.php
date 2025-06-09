@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/connection.php';
+include("HTML/header.html");
+require_once 'connection.php';
 
 // Verbindung zur Datenbank herstellen
 $conn = getDBConnection();
@@ -7,13 +8,17 @@ $conn = getDBConnection();
 // SQL-Abfrage, um alle Artikel zu holen
 $sql = "SELECT * FROM Artikel ORDER BY Artikelnummer DESC";
 $result = $conn->query($sql);
-
-$pageTitle  = 'Bestandsübersicht';
-$pageStyles = ['/CSS/productStock.css'];
-ob_start();
 ?>
 
-<!-- Reines HTML -->
+    <!DOCTYPE html>
+    <html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Produktübersicht</title>
+        <link rel="stylesheet" href="CSS/productStock.css">
+    </head>
+    <body>
     <div class="container">
         <div class="header">
             <a href="addProduct.php" class="btn-add">
@@ -133,8 +138,13 @@ ob_start();
         </div>
     </div>
 
-<script src="/JAVASCRIPT/productStock.js"></script>
+
+    </body>
+    </html>
 
 <?php
-$content = ob_get_clean();
-include __DIR__.'/layout.php';
+include("HTML/footer.html");
+?>
+
+
+    <script src="JAVASCRIPT/productStock.js"></script>

@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/connection.php';
+include("HTML/header.html");
+
+require_once 'connection.php';
 
 // Verarbeitung des Formulars
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -60,15 +62,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-
-// 2) Template-Steuerung
-$pageTitle = 'Produkt hinzufügen';
-$pageStyles = ['/CSS/addProduct.css'];
-
-ob_start();
 ?>
 
-                                                                <!-- Reines HTML -->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Add Product</title>
+        <link rel="stylesheet" href="CSS/addProduct.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    </head>
+    <body>
+
     <div class="container">
         <div class="form-container">
             <h1>Neuprodukt anlegen</h1>
@@ -156,10 +161,9 @@ ob_start();
         </div>
     </div>
 
-                                                        <!-- Scripts am Ende -->
-<script src="/JAVASCRIPT/addProduct.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    </body>
+    </html>
 
 <?php
-$content = ob_get_clean();
-include __DIR__.'/layout.php';
+include("HTML/footer.html");
+?>

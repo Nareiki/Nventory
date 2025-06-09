@@ -1,5 +1,11 @@
-<?php
-require_once __DIR__ . '/connection.php';
+
+<?php require_once 'connection.php';
+// ganz oben in personalDashboard.php einfügen
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 
 // Verbindung zur Datenbank herstellen
 $conn = getDBConnection();
@@ -17,13 +23,22 @@ if ($result) {
     $rowCount["anzahl"] = "keine Artikel vorhanden";
 }
 
-$pageTitle  = 'Persönliches Dashboard';
-$pageStyles = ['/CSS/personalDashboard.css'];
-ob_start();
+
 ?>
 
+
+
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Nventory</title>
+        <link rel="stylesheet" href="CSS/personalDashboard.css">
+    </head>
+    <body>
     <div class = "dashboardHeaderContainer">
-        <div class = "dashboardHeaderItem"><a href="index.php"><img src="/pictures/Nventory_Logo.png" height=" 40px" ></a></div>
+        <div class = "dashboardHeaderItem"><a href="index.php"><img src="pictures/Nventory_Logo.png" height=" 40px" ></a></div>
     </div>
     <div class = dashboardOuterContainer>
         <div class = "sideBarOuterContainer">
@@ -64,12 +79,12 @@ ob_start();
             </div>
         </div>
     </div>
+    </body>
+    </html>
 
     <script
-        src="/JAVASCRIPT/personalDashboard.js">
+        src="JAVASCRIPT/personalDashboard.js">
     </script>
 
-<?php
-$content = ob_get_clean();
-include __DIR__.'/layout.php';
+<?php include("HTML/footer.html") ?>
 

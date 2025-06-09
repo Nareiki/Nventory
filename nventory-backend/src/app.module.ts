@@ -3,9 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CatsModule } from './cats/cats.module';
-import { Warehouse } from './entities/warehouse.entity';
-import { WarehouseModule } from './core/warehouse/warehouse.module';
-import { WarehouseHttpModule } from './http/warehouse-http/warehouse-http.module';
 
 @Module({
   imports: [
@@ -16,12 +13,10 @@ import { WarehouseHttpModule } from './http/warehouse-http/warehouse-http.module
       username: 'root',
       password: 'P4ssw0rd12?',
       database: 'nventory',
-      entities: [Warehouse],
+      entities: [],
       synchronize: true,
     }),
-    CatsModule,
-    WarehouseModule,
-    WarehouseHttpModule
+    CatsModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -112,3 +112,42 @@ video {
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.6;
 }
+
+.stockBtn{
+    padding:.4rem .8rem;
+    margin-left:.5rem;
+}
+
+#articleInfo {
+  display: none;  
+}
+
+/* scanProduct.css */
+.infoWrapper {
+  width: 300px;
+  margin: 0 auto 1rem;
+  padding: 2rem;
+  background: linear-gradient(145deg, #2a2d34, #383c47);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15),
+              0 4px 6px rgba(0,0,0,0.1);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.articleActions {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f3efe5;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
