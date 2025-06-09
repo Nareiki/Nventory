@@ -9,6 +9,8 @@ import { WarehouseHttpModule } from './http/warehouse-http/warehouse-http.module
 import { ShelfModule } from './core/shelf/shelf.module';
 import { ShelfHttpModule } from './http/shelf-http/shelf-http.module';
 import { ShelfController } from './http/shelf-http/shelf.controller';
+import { ArticleHttpModule } from './http/article-http/article-http.module';
+import { ArticleController } from './http/article-http/article.controller';
 import { ArticleModule } from './core/article/article.module';
 import { ArticleModule } from './http/article-http/article/article.module';
 import { ArticleHttpModule } from './http/article-http/article-http/article-http.module';
