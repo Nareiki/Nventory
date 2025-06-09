@@ -3,13 +3,13 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 @Entity()
 export class Warehouse {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({ type: 'int' })
     warehouseID: number
 
-    @Column()
+    @Column({ type: 'varchar', length: 255 })
     warehouseName: string
 
-    @Column()
+    @Column({ type: 'varchar', length: 255 })
     warehouseLocation: string
 
 

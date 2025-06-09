@@ -3,16 +3,16 @@ import { Warehouse } from "./warehouse.entity";
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({ type: 'int' })
     userID: number
 
-    @Column()
+    @Column({ type: 'varchar', length: 255 })
     userName: string
 
-    @Column()
+    @Column({ type: 'varchar', length: 255 })
     userPassword: string
 
-    @Column()
+    @Column({ type: 'int' })
     warehouseID: number
 
     @ManyToOne(() => Warehouse)

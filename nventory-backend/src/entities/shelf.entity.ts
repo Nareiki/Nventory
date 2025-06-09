@@ -3,10 +3,10 @@ import { Warehouse } from "./warehouse.entity";
 
 @Entity()
 export class Shelf {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({ type: 'int' })
     shelfID: number
 
-    @Column()
+    @Column({ type: 'int' })
     warehouseID: number
 
     @ManyToOne(() => Warehouse)
