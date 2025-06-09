@@ -69,4 +69,21 @@ export class ArticleService {
         article.articleAmount = Math.round(articleAmount);
         return this.articleRepository.save(article)
     }
+
+    async update(id: number, updateData: Partial<Article>): Promise<Article | null> {
+        const article = await this.articleRepository.findOneBy({ articleID: id });
+        if (!article) return null;
+        // Update only provided fields
+        if (updateData.articleName !== undefined) article.articleName = updateData.articleName;
+        if (updateData.articleInformation !== undefined) article.articleInformation = updateData.articleInformation;
+        if (updateData.articleAmount !== undefined) article.articleAmount = Math.round(updateData.articleAmount);
+        if (updateData.articlePrice !== undefined) article.articlePrice = Math.round((updateData.articlePrice + Number.EPSILON) * 100) / 100;
+        // Optionally update shelf/warehouse if needed
+        return this.articleRepository.save(article);
+    }
+
+    async remove(id: number): Promise<boolean> {
+        const result = await this.articleRepository.delete({ articleID: id });
+        return !!result.affected && result.affected > 0;
+    }
 }

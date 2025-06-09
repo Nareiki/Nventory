@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Post, Body, Put, Param, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Query, Post, Body, Put, Param, BadRequestException, Delete } from '@nestjs/common';
 import { ArticleService } from 'src/core/article/article.service';
 import { FindArticleDto } from 'src/core/article/dto/find-article.dto';
 import { Article } from 'src/entities/article.entity';
@@ -67,5 +67,26 @@ export class ArticleController {
     @Put(':id/amount')
     async updateAmount(@Param('id') id: number, @Body('articleAmount') articleAmount: number) {
         return this.articleService.updateAmount(id, articleAmount)
+    }
+
+    @Put(':id')
+    async update(@Param('id') id: number, @Body() updateData: Partial<Article>) {
+        // Validate input (optional: add more checks as needed)
+        if (updateData.articlePrice !== undefined && updateData.articlePrice < 0) {
+            throw new BadRequestException('Price cannot be negative');
+        }
+        if (updateData.articleAmount !== undefined && updateData.articleAmount < 0) {
+            throw new BadRequestException('Amount cannot be negative');
+        }
+        return this.articleService.update(id, updateData);
+    }
+
+    @Delete(':id')
+    async remove(@Param('id') id: number) {
+        const result = await this.articleService.remove(id);
+        if (!result) {
+            throw new BadRequestException('Article not found or could not be deleted');
+        }
+        return { success: true };
     }
 }
