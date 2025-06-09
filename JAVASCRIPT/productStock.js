@@ -1,82 +1,81 @@
-
-    // Suchfunktion
-    document.getElementById('searchInput').addEventListener('input', function() {
+// Suchfunktion
+document.getElementById('searchInput').addEventListener('input', function () {
     const searchTerm = this.value.toLowerCase();
     const rows = document.querySelectorAll('tbody tr');
     let visibleRows = 0;
 
     rows.forEach(row => {
-    if (row.classList.contains('no-data')) return;
+        if (row.classList.contains('no-data')) return;
 
-    const text = row.textContent.toLowerCase();
-    const isVisible = text.includes(searchTerm);
-    row.style.display = isVisible ? '' : 'none';
+        const text = row.textContent.toLowerCase();
+        const isVisible = text.includes(searchTerm);
+        row.style.display = isVisible ? '' : 'none';
 
-    if (isVisible) visibleRows++;
-});
+        if (isVisible) visibleRows++;
+    });
 
     // "Keine Ergebnisse" Zeile anzeigen, wenn keine Treffer
     const noDataRow = document.querySelector('.no-data');
     if (visibleRows === 0 && !noDataRow) {
-    const tbody = document.querySelector('tbody');
-    const tr = document.createElement('tr');
-    tr.className = 'no-data-search';
-    const td = document.createElement('td');
-    td.colSpan = 7;
-    td.className = 'no-data';
-    td.textContent = 'Keine passenden Artikel gefunden';
-    tr.appendChild(td);
-    tbody.appendChild(tr);
-} else if (visibleRows > 0) {
-    const noDataSearchRow = document.querySelector('.no-data-search');
-    if (noDataSearchRow) noDataSearchRow.remove();
-}
+        const tbody = document.querySelector('tbody');
+        const tr = document.createElement('tr');
+        tr.className = 'no-data-search';
+        const td = document.createElement('td');
+        td.colSpan = 7;
+        td.className = 'no-data';
+        td.textContent = 'Keine passenden Artikel gefunden';
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+    } else if (visibleRows > 0) {
+        const noDataSearchRow = document.querySelector('.no-data-search');
+        if (noDataSearchRow) noDataSearchRow.remove();
+    }
 });
 
-    // Suchfeld zurücksetzen
-    document.getElementById('clearSearch').addEventListener('click', function() {
+// Suchfeld zurücksetzen
+document.getElementById('clearSearch').addEventListener('click', function () {
     document.getElementById('searchInput').value = '';
     const rows = document.querySelectorAll('tbody tr');
 
     rows.forEach(row => {
-    if (!row.classList.contains('no-data-search')) {
-    row.style.display = '';
-}
-});
+        if (!row.classList.contains('no-data-search')) {
+            row.style.display = '';
+        }
+    });
 
     const noDataSearchRow = document.querySelector('.no-data-search');
     if (noDataSearchRow) noDataSearchRow.remove();
 });
 
-    // Filter zurücksetzen
-    document.getElementById('clearFilter').addEventListener('click', function() {
+// Filter zurücksetzen
+document.getElementById('clearFilter').addEventListener('click', function () {
     document.getElementById('searchInput').value = '';
     const rows = document.querySelectorAll('tbody tr');
 
     rows.forEach(row => {
-    if (!row.classList.contains('no-data-search')) {
-    row.style.display = '';
-}
-});
+        if (!row.classList.contains('no-data-search')) {
+            row.style.display = '';
+        }
+    });
 
     const noDataSearchRow = document.querySelector('.no-data-search');
     if (noDataSearchRow) noDataSearchRow.remove();
 });
 
-    // Modal-Funktionalität
-    const modal = document.getElementById('editModal');
-    const closeBtn = document.querySelector('.close-modal');
-    const cancelBtn = document.getElementById('cancelEdit');
-    const editButtons = document.querySelectorAll('.edit-product');
-    const deleteBtn = document.getElementById('deleteProduct');
-    const increaseBtn = document.getElementById('increase');
-    const decreaseBtn = document.getElementById('decrease');
-    const mengeInput = document.getElementById('menge');
-    const form = document.getElementById('editProductForm');
+// Modal-Funktionalität
+const modal = document.getElementById('editModal');
+const closeBtn = document.querySelector('.close-modal');
+const cancelBtn = document.getElementById('cancelEdit');
+const editButtons = document.querySelectorAll('.edit-product');
+const deleteBtn = document.getElementById('deleteProduct');
+const increaseBtn = document.getElementById('increase');
+const decreaseBtn = document.getElementById('decrease');
+const mengeInput = document.getElementById('menge');
+const form = document.getElementById('editProductForm');
 
-    // Edit-Button-Event für alle Produkte
-    editButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
+// Edit-Button-Event für alle Produkte
+editButtons.forEach(button => {
+    button.addEventListener('click', function (e) {
         e.preventDefault();
         const row = this.closest('tr');
 
@@ -92,38 +91,38 @@
     });
 });
 
-    // Modal schließen bei Klick auf X
-    closeBtn.addEventListener('click', function() {
+// Modal schließen bei Klick auf X
+closeBtn.addEventListener('click', function () {
     modal.style.display = 'none';
 });
 
-    // Modal schließen bei Klick auf Abbrechen
-    cancelBtn.addEventListener('click', function() {
+// Modal schließen bei Klick auf Abbrechen
+cancelBtn.addEventListener('click', function () {
     modal.style.display = 'none';
 });
 
-    // Modal schließen bei Klick außerhalb des Modals
-    window.addEventListener('click', function(event) {
+// Modal schließen bei Klick außerhalb des Modals
+window.addEventListener('click', function (event) {
     if (event.target === modal) {
-    modal.style.display = 'none';
-}
+        modal.style.display = 'none';
+    }
 });
 
-    // Menge erhöhen
-    increaseBtn.addEventListener('click', function() {
+// Menge erhöhen
+increaseBtn.addEventListener('click', function () {
     mengeInput.value = parseInt(mengeInput.value) + 1;
 });
 
-    // Menge verringern
-    decreaseBtn.addEventListener('click', function() {
+// Menge verringern
+decreaseBtn.addEventListener('click', function () {
     const currentValue = parseInt(mengeInput.value);
     if (currentValue > 0) {
-    mengeInput.value = currentValue - 1;
-}
+        mengeInput.value = currentValue - 1;
+    }
 });
 
-    // Formulardaten senden
-    form.addEventListener('submit', function(e) {
+// Formulardaten senden
+form.addEventListener('submit', function (e) {
     e.preventDefault();
 
     // Hier den AJAX-Code einfügen, um die Daten zu aktualisieren
@@ -131,21 +130,32 @@
 
     // Als Beispiel: Ausgabe der Daten in der Konsole
     console.log('Daten speichern:', Object.fromEntries(formData));
-
+    console.log('Artikelnummer:', formData.get('artikelnummer'));
     // Hier würde normalerweise ein AJAX-Request erfolgen
-    // fetch('update_product.php', {
-    //     method: 'POST',
-    //     body: formData
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     if (data.success) {
-    //         // Seite neu laden oder Zeile aktualisieren
-    //         location.reload();
-    //     } else {
-    //         alert('Fehler beim Speichern!');
-    //     }
-    // });
+    fetch('http://localhost:3000/article/' + encodeURIComponent(formData.get('artikelnummer')), {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            articleName: formData.get('produktname'),
+            articleInformation: formData.get('information'),
+            articleAmount: parseInt(formData.get('menge'), 10),
+            articlePrice: parseFloat(formData.get('preis').replace(',', '.'))
+        })
+    })
+        .then(response => {
+            if (!response.ok) throw new Error('Fehler beim Speichern!');
+            console.log('Daten erfolgreich gespeichert');
+            return response.json();
+        })
+        .then(data => {
+            // Seite neu laden oder Zeile aktualisieren
+            location.reload();
+        })
+        .catch(err => {
+            alert(err.message);
+        });
 
     // Modal schließen
     modal.style.display = 'none';
@@ -154,36 +164,24 @@
     // location.reload();
 });
 
-    // Produkt löschen
-    deleteBtn.addEventListener('click', function() {
+// Produkt löschen
+deleteBtn.addEventListener('click', function () {
     const artikelnummer = document.getElementById('artikelnummer').value;
 
     if (confirm('Möchten Sie dieses Produkt wirklich löschen?')) {
-    // Hier den AJAX-Code einfügen, um das Produkt zu löschen
-    console.log('Produkt löschen:', artikelnummer);
+        fetch('http://localhost:3000/article/' + encodeURIComponent(artikelnummer), {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('Fehler beim Löschen!');
+                // Seite neu laden nach erfolgreichem Löschen
+                location.reload();
+            })
+            .catch(err => {
+                alert(err.message);
+            });
 
-    // Hier würde normalerweise ein AJAX-Request erfolgen
-    // fetch('delete_product.php', {
-    //     method: 'POST',
-    //     body: JSON.stringify({ artikelnummer: artikelnummer }),
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     if (data.success) {
-    //         // Seite neu laden
-    //         location.reload();
-    //     } else {
-    //         alert('Fehler beim Löschen!');
-    //     }
-    // });
-
-    // Modal schließen
-    modal.style.display = 'none';
-
-    // Für Testzwecke: Seite neu laden
-    // location.reload();
-}
+        // Modal schließen
+        modal.style.display = 'none';
+    }
 });
