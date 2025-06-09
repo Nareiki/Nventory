@@ -6,6 +6,13 @@ import { CatsModule } from './cats/cats.module';
 import { Warehouse } from './entities/warehouse.entity';
 import { WarehouseModule } from './core/warehouse/warehouse.module';
 import { WarehouseHttpModule } from './http/warehouse-http/warehouse-http.module';
+import { ShelfModule } from './core/shelf/shelf.module';
+import { ShelfHttpModule } from './http/shelf-http/shelf-http.module';
+import { ShelfController } from './http/shelf-http/shelf.controller';
+import { ArticleModule } from './core/article/article.module';
+import { ArticleModule } from './http/article-http/article/article.module';
+import { ArticleHttpModule } from './http/article-http/article-http/article-http.module';
+import { ArticleController } from './http/article-http/article/article.controller';
 
 @Module({
   imports: [
@@ -21,9 +28,13 @@ import { WarehouseHttpModule } from './http/warehouse-http/warehouse-http.module
     }),
     CatsModule,
     WarehouseModule,
-    WarehouseHttpModule
+    WarehouseHttpModule,
+    ShelfModule,
+    ShelfHttpModule,
+    ArticleModule,
+    ArticleHttpModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, ShelfController, ArticleController],
   providers: [AppService],
 })
 export class AppModule { }
