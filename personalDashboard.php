@@ -39,15 +39,13 @@ $labels=$values=[];for($i=6;$i>=0;$i--){$d=date('Y-m-d',strtotime("-$i day"));$l
   <title>Nventory · Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="CSS/personalDashboard.css">
-
+  <link rel="stylesheet" href="CSS/dashboard.css">
+  <!-- Styles in CSS/personalDashboard.css -->
 </head>
 <body>
-<header class="topbar">
-  <a href="index.php">
-    <img src="pictures/Nventory_Logo.png" alt="Home">
-  </a>
-</header>
+<!-- Header mit Logo, führt zur Startseite -->
+<header class="topbar"><a href="index.php"><img src="pictures/logoTest_transparent.png" alt="Home"></a></header>
+
 <div class="wrapper">
   <nav class="sidebar">
     <a class="nav-item active" href="personalDashboard.php">Dashboard</a>

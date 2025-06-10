@@ -24,12 +24,12 @@ $rows = $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
   <meta charset="UTF-8">
   <title>Transaktionen · Nventory</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="CSS/transactions.css">
+<link rel="stylesheet" href="CSS/transactions.css">
 </head>
 <body>
 <header class="topbar">
   <a href="index.php">
-    <img src="pictures/Nventory_Logo.png" alt="Home">
+    <img src="pictures/logoTest_transparent.png" alt="Home">
   </a>
 </header>
   <nav class="sidebar">

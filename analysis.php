@@ -34,13 +34,13 @@ usort($rows, fn($a,$b) => ($a['days']??PHP_INT_MAX) <=> ($b['days']??PHP_INT_MAX
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="CSS/analysis.css">
+    <link rel="stylesheet" href="CSS/analysis.css">
 </head>
 
 <body>
 <header class="topbar">
   <a href="index.php">
-    <img src="pictures/Nventory_Logo.png" alt="Home">
+    <img src="pictures/logoTest_transparent.png" alt="Home">
   </a>
 </header>
   <nav class="sidebar">

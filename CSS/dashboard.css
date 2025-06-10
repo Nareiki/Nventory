@@ -54,6 +54,7 @@ h1{font-size:1.6rem;font-weight:600;margin-bottom:1.25rem}
   background: var(--bg-1);
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0 1rem;
   z-index: 100;
 }
@@ -66,3 +67,16 @@ h1{font-size:1.6rem;font-weight:600;margin-bottom:1.25rem}
 .wrapper {
   padding-top: 60px;
 }
+
+:root{--bg-0:#181818;--bg-1:#212121;--bg-2:#2a2a2a;--txt:#e5e5e5;--accent:#9c9c9c;}
+*{box-sizing:border-box;font-family:"Inter",sans-serif;margin:0;padding:0}
+body{background:var(--bg-0);color:var(--txt);display:flex;height:100vh}
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;background:var(--bg-1);display:flex;align-items:center;padding:0 1rem;z-index:100;}
+.topbar img{height:36px;}
+.wrapper{display:flex;width:100%;padding-top:60px;}
+.sidebar{width:200px;background:var(--bg-1);display:flex;flex-direction:column;padding:1.5rem .75rem;gap:.5rem;}
+.nav-item{display:block;padding:.65rem 1rem;border-radius:6px;font-size:.95rem;font-weight:500;color:var(--txt);text-decoration:none;}
+.nav-item:hover{background:#333;}
+.active{background:#444;}
+.content{flex:1;padding:1.75rem;overflow:auto;}
+/* … plus alle deine Card- und Table-Styles … */
