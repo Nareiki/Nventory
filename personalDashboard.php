@@ -1,90 +1,95 @@
-
-<?php require_once 'connection.php';
-// ganz oben in personalDashboard.php einfügen
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+<?php
+require_once 'connection.php';
+ini_set('display_errors',1);
 error_reporting(E_ALL);
 
-
-
-// Verbindung zur Datenbank herstellen
 $conn = getDBConnection();
+$threshold = 5;
 
-// SQL-Abfrage, um alle Artikel zu holen
-$sql = "SELECT COUNT(*) AS anzahl FROM Artikel";
-$result = $conn->query($sql);
+// === Kennzahlen =========================================================
+$totalProducts  = $conn->query("SELECT COUNT(*) FROM Artikel")->fetch_row()[0];
+$totalQuantity  = $conn->query("SELECT IFNULL(SUM(Menge),0) FROM Artikel")->fetch_row()[0];
+$inventoryValue = $conn->query("SELECT IFNULL(SUM(Menge*Kaufpreis),0) FROM Artikel")->fetch_row()[0];
 
-if ($result) {
-    $rowCount = $result->fetch_assoc();
-    $sql = "SELECT SUM(Menge) AS menge FROM Artikel";
-    $result = $conn->query($sql);
-    $articleSum = $result->fetch_assoc();
-} else {
-    $rowCount["anzahl"] = "keine Artikel vorhanden";
-}
+// === Low‑Stock Artikel ==================================================
+$lowStmt = $conn->prepare("SELECT Artikelnummer, Produktname, Menge FROM Artikel WHERE Menge<=? ORDER BY Menge ASC, Produktname");
+$lowStmt->bind_param('i',$threshold);
+$lowStmt->execute();
+$lowItems = $lowStmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$lowStmt->close();
+$lowCnt = count($lowItems);
 
+// === Top‑5 Bestseller (30 Tage) ========================================
+$topQ = "SELECT A.Artikelnummer, A.Produktname, SUM(-S.delta) sold
+         FROM StockTransactions S
+         JOIN Artikel A ON A.Artikelnummer=S.artikelnummer
+         WHERE S.delta<0 AND S.created_at>=DATE_SUB(CURDATE(),INTERVAL 30 DAY)
+         GROUP BY A.Artikelnummer ORDER BY sold DESC LIMIT 5";
+$topItems = $conn->query($topQ)->fetch_all(MYSQLI_ASSOC);
 
+// === Verkäufe letzte 7 Tage ============================================
+$raw = $conn->query("SELECT DATE(created_at) d, SUM(-delta) s FROM StockTransactions WHERE delta<0 AND created_at>=DATE_SUB(CURDATE(),INTERVAL 6 DAY) GROUP BY d");
+$tmp=[];while($r=$raw->fetch_assoc())$tmp[$r['d']]=$r['s'];
+$labels=$values=[];for($i=6;$i>=0;$i--){$d=date('Y-m-d',strtotime("-$i day"));$labels[]=date('d.m',strtotime($d));$values[]=$tmp[$d]??0;}
 ?>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Nventory · Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="CSS/personalDashboard.css">
 
-
-
-
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Nventory</title>
-        <link rel="stylesheet" href="CSS/personalDashboard.css">
-    </head>
-    <body>
-    <div class = "dashboardHeaderContainer">
-        <div class = "dashboardHeaderItem"><a href="index.php"><img src="pictures/Nventory_Logo.png" height=" 40px" ></a></div>
-    </div>
-    <div class = dashboardOuterContainer>
-        <div class = "sideBarOuterContainer">
-            <div class = "sideBarItemContainer">
-            <div class="sidebarItem" data-hover="BESTAND">
-                <a href="#"><img src="pictures/icons/chart-simple-solid.svg" height="30px"></a>
-            </div>
-            <div class="sidebarItem" data-hover="NEUPRODUKT">
-                <a href="#"><img src="pictures/icons/chart-simple-solid.svg" height="30px"></a>
-            </div>
-            <div class="sidebarItem" data-hover="STATISTIK">
-                <a href="#"><img src="pictures/icons/chart-simple-solid.svg" height="30px"></a>
-            </div>
-            <div class="sidebarItem" data-hover="EINSTELLUNGEN">
-                <a href="#"><img src="pictures/icons/chart-simple-solid.svg" height="30px"></a>
-            </div>
-            </div>
-            </div>
-
-        <div class = "dashboardItemOuterContainer">
-            <div class = "dashboardHeadlineContainer">
-                <div style="margin-left: 30px;"><img src="pictures/icons/calendar-regular.svg" height=" 20px" ></div>
-                <div class = "dashboardHeadlineItem">Dashboard</div>
-            </div>
-            <div class = "dashboardItemInnerContainerTop">
-                <div class = "dashboardItem">Produkte: <?php echo $rowCount["anzahl"] ?></div>
-                <div class = "dashboardItem">Summe der Stückzahlen: <?php echo $articleSum["menge"] ?></div>
-                <div class = "dashboardItem">???????</div>
-            </div>
-            <div class = "dashboardItemInnerContainerBottom">
-                <div class = "dashboardHeadlineContainer">
-                    <div style="margin-left: 30px;"><img src="pictures/icons/chart-bar-regular.svg" height=" 20px" ></div>
-                    <div class = "dashboardHeadlineItem">Recent Activity</div>
-                </div>
-                <div>
-                    TABELLE HIER EINFÜGEN
-                </div>
-            </div>
-        </div>
-    </div>
-    </body>
-    </html>
-
-    <script
-        src="JAVASCRIPT/personalDashboard.js">
-    </script>
-
-<?php include("HTML/footer.html") ?>
-
+</head>
+<body>
+<header class="topbar">
+  <a href="index.php">
+    <img src="pictures/Nventory_Logo.png" alt="Home">
+  </a>
+</header>
+<div class="wrapper">
+  <nav class="sidebar">
+    <a class="nav-item active" href="personalDashboard.php">Dashboard</a>
+    <a class="nav-item" href="transactions.php">Transaktionen</a>
+    <a class="nav-item" href="analysis.php">Nutzwertanalyse</a>
+    <a class="nav-item" href="addProduct.php">Neu‑Produkt</a>
+  </nav>
+  <main class="content">
+    <h1>Dashboard</h1>
+    <section class="cards">
+      <div class="card"><h2>Produkte gesamt</h2><p><?= $totalProducts ?></p></div>
+      <div class="card"><h2>Summe Stückzahlen</h2><p><?= $totalQuantity ?></p></div>
+      <div class="card"><h2>Low‑Stock Artikel</h2><p><?= $lowCnt ?></p></div>
+      <div class="card"><h2>Inventarwert (€)</h2><p><?= number_format($inventoryValue,2,',','.') ?></p></div>
+    </section>
+    <section class="card full">
+      <h2>Artikel mit geringem Bestand (≤ <?= $threshold ?>)</h2>
+      <?php if(!$lowCnt): ?><p class="muted">Keine kritischen Bestände.</p><?php else: ?><div class="list">
+        <?php foreach($lowItems as $it): ?>
+          <div class="list-item"><span>#<?= $it['Artikelnummer'] ?> – <?= htmlspecialchars($it['Produktname']) ?></span><strong><?= $it['Menge'] ?></strong></div>
+        <?php endforeach; ?></div><?php endif; ?>
+    </section>
+    <section class="card full">
+      <h2>Top 5 Bestseller (30 Tage)</h2>
+      <?php if(!$topItems): ?><p class="muted">Noch keine Verkäufe.</p><?php else: ?><div class="list">
+        <?php foreach($topItems as $t): ?>
+          <div class="list-item"><span>#<?= $t['Artikelnummer'] ?> – <?= htmlspecialchars($t['Produktname']) ?></span><strong><?= $t['sold'] ?></strong></div>
+        <?php endforeach; ?></div><?php endif; ?>
+    </section>
+    <section class="card full">
+      <h2>Verkäufe letzte 7 Tage</h2><canvas id="salesChart"></canvas>
+    </section>
+  </main>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    new Chart(document.getElementById('salesChart'),{
+      type:'bar',
+      data:{labels:<?=json_encode($labels)?>,datasets:[{data:<?=json_encode($values)?>}]},
+      options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#333'},ticks:{color:'#ccc'}},x:{grid:{display:false},ticks:{color:'#ccc'}}}}
+    });
+  });
+</script>
+</body>
+</html>

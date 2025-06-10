@@ -40,7 +40,18 @@ try {
     $stmt->close();
 
     $db->commit(); //neue Menge wird endgültig übernommen
-    echo json_encode(['success'=>true,'mengeNeu'=>$mengeNeu]);
+    // Transaktion protokollieren
+    $logStmt = $db->prepare("
+        INSERT INTO StockTransactions (artikelnummer, delta, transaction_type)
+        VALUES (?, ?, ?)
+    ");
+    $transactionType = $delta > 0 ? 'IN' : 'OUT';
+    $logStmt->bind_param("iis", $artNr, $delta, $transactionType);
+    $logStmt->execute();
+    $logStmt->close();
+
+    // Ausgabe an den Client
+    echo json_encode(['success' => true, 'mengeNeu' => $mengeNeu]);
 
 } catch (Exception $e) {
     if ($db->in_transaction) $db->rollback(); //rollback, damit wir den Bestand nicht ändern, falls während der Transaktion etwas schief geht

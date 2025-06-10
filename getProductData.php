@@ -1,5 +1,4 @@
 <?php
-// getProductData.php
 require_once 'connection.php';
 header('Content-Type: text/html; charset=utf-8');
 
@@ -17,7 +16,7 @@ if ($artikelnummer <= 0) {
     exit;
 }
 
-// Fragen Datenbank ab
+//Fragen Datenbank ab
 try {
     $db = getDBConnection();
 
