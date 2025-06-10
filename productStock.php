@@ -5,8 +5,33 @@ require_once 'connection.php';
 // Verbindung zur Datenbank herstellen
 $conn = getDBConnection();
 
-// SQL-Abfrage, um alle Artikel zu holen
-$sql = "SELECT * FROM Artikel ORDER BY Artikelnummer DESC";
+// SortierLink - auf- bzw. absteigend
+$allowedSort = ['artikelnummer','menge', 'kaufpreis', 'produktname'];
+
+//Standardsortierung auf artikelnummer
+$sort = isset($_GET['sort']) && in_array($_GET['sort'], $allowedSort)
+    ? $_GET['sort']
+    : 'artikelnummer';
+
+//Standardsort ist DESC, kann aber hier aussuchen
+$dir = (isset($_GET['dir']) && strtolower($_GET['dir'])==='asc')
+    ? 'ASC'
+    : 'DESC';
+
+//wenn gerade ASC, dann beim nächsten Klick desc
+$toggleDir = $dir==='ASC' ? 'desc' : 'asc';
+
+if ($sort==='menge') {
+    $orderBy = "Menge $dir";
+} elseif ($sort==='kaufpreis') {
+    $orderBy = "Kaufpreis $dir";
+} elseif ($sort==='produktname') {
+    $orderBy = "produktname $dir";
+} else {
+    $orderBy = "Artikelnummer $dir";
+}
+
+$sql = "SELECT * FROM Artikel ORDER BY $orderBy";
 $result = $conn->query($sql);
 ?>
 
@@ -37,12 +62,41 @@ $result = $conn->query($sql);
             <thead>
             <tr>
                 <th>QR</th>
-                <th>Artikelnummer</th>
-                <th>Produktname</th>
+                <th class="sortable">
+                    <a href="?sort=artikelnummer&dir=<?= htmlspecialchars($toggleDir) ?>" title="Nach Artikelnummer sortieren">
+                        Artikelnummer
+                        <?php if($sort==='artikelnummer'): ?>
+                            <?= $dir==='ASC' ? '▲' : '▼' ?>
+                        <?php endif ?>
+                    </a>
+                </th>
+                <th class="sortable">
+                    <a href="?sort=produktname&dir=<?= htmlspecialchars($toggleDir) ?>" title="Nach Produktnamen sortieren">
+                        Produktname
+                        <?php if($sort==='produktname'): ?>
+                            <?= $dir==='ASC' ? '▲' : '▼' ?> 
+                        <?php endif ?>
+                    </a>
+                </th>
                 <th>Information</th>
-                <th>Menge</th>
-                <th>Preis</th>
-                <th></th>
+                <th class="sortable">
+                    <a href="?sort=menge&dir=<?= htmlspecialchars($toggleDir) ?>" title="Nach Menge sortieren">
+                        Menge
+                        <?php if($sort==='menge'): ?>
+                            <?= $dir==='ASC' ? '▲' : '▼' ?> <!-- die Pfeile zum Sortieren, starten mit aufsteigend-->
+                        <?php endif ?>
+                    </a>
+                </th>
+                <th class="sortable">
+                     <a href="?sort=kaufpreis&dir=<?= htmlspecialchars($toggleDir) ?>"
+                        title="Nach Preis sortieren">
+                    Preis
+                    <?php if($sort==='kaufpreis'): ?>
+                        <span class="sort-icon"><?= $dir==='ASC' ? '▲' : '▼' ?></span>
+                    <?php endif ?>
+                    </a>
+                </th>
+                <th>Produkt Bearbeiten</th>
             </tr>
             </thead>
             <tbody>
