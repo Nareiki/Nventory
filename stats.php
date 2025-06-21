@@ -11,7 +11,7 @@
 <body>
 <div class="container">
     <div class="header">
-        <h2>📊 Verkaufsstatistiken</h2>
+        <h2>Verkaufsstatistiken</h2>
     </div>
 
     <div class="container">
@@ -30,7 +30,7 @@
     </div>
 
     <div class="container">
-        <h3>🔢 Artikel nach Verkaufsmenge</h3>
+        <h3>Artikel nach Verkaufsmenge</h3>
         <table>
             <thead>
             <tr>
@@ -43,7 +43,7 @@
     </div>
 
     <div class="container">
-        <h3>📈 Artikel nach durchschnittlichem DB</h3>
+        <h3>Artikel nach durchschnittlichem DB</h3>
         <table>
             <thead>
             <tr>
