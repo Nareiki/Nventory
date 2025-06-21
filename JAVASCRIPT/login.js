@@ -1,3 +1,18 @@
+checkIfAuthenticated();
+
+async function checkIfAuthenticated() {
+    try {
+        const response = await fetch('./api/auth.php');
+        const data = await response.json();
+
+        if (data.authenticated) {
+            window.location.href = './personalDashboard.php';
+        }
+    } catch (error) {
+        console.error('Fehler bei der Authentifizierungsprüfung:', error);
+    }
+}
+
 // Warte, bis das DOM vollständig geladen ist
 document.addEventListener('DOMContentLoaded', function() {
     // Formular-Element auswählen
@@ -62,9 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Simulation einer Login-Anfrage (nur für Demo-Zwecke)
     async function login(formData) {
-        // Simuliere einen Ladevorgang
+
         const submitBtn = document.querySelector('.submit-btn');
         submitBtn.textContent = 'Wird angemeldet...';
         submitBtn.disabled = true;

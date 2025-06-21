@@ -13,5 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION["loggedIn"] = true;
     }
 
+    if (isset($_POST['remember']) && $_POST['remember'] === '1') {
+        setcookie("rememberedUsername", $_POST["username"], time() + (86400 * 30), "/");
+    }
+
     echo json_encode($result);
 }
