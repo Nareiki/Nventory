@@ -160,7 +160,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
-
+    <script src="JAVASCRIPT/authentificationCheck.js"></script>
     </body>
     </html>
 

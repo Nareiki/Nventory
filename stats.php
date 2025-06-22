@@ -56,6 +56,7 @@
     </div>
 </div>
 
+<script src="JAVASCRIPT/authentificationCheck.js"></script>
 <script src="JAVASCRIPT/statistik.js"></script>
 </body>
 </html>

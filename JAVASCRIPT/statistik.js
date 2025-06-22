@@ -61,3 +61,4 @@ function ladeStatistiken() {
 document.addEventListener("DOMContentLoaded", () => {
     ladeStatistiken();
 });
+

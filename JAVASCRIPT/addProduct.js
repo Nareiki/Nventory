@@ -1,5 +1,3 @@
-
-
 function redirect() {
     let urlRedirect = document.getElementById("number").value;
     window.location.href = urlRedirect;

@@ -73,5 +73,5 @@ async function ladeStatistiken(): Promise<void> {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  ladeStatistiken();
+    ladeStatistiken();
 });

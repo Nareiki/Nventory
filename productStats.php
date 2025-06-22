@@ -28,7 +28,8 @@
         </div>
     </div>
     <br><br><br>
-
+    
+    <script src="JAVASCRIPT/authentificationCheck.js"></script>
     <script src="JAVASCRIPT/productSatistik.js"></script>
 </body>
 </html>
