@@ -4,6 +4,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produktstatistik</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -17,12 +18,12 @@
             <div class="card-body">
                 <div id="produkt-info" class="mb-3"></div>
 
-                <div class="mb-2"><strong>Name:</strong> <span id="name" class="text-muted"></span></div>
-                <div class="mb-2"><strong>Kaufpreis:</strong> <span id="kaufpreis" class="text-muted"></span></div>
-                <div class="mb-2"><strong>Bestand:</strong> <span id="bestand" class="text-muted"></span></div>
-                <div class="mb-2"><strong>Durchschnittlicher Verkaufspreis:</strong> <span id="durchschnittlicherVKP" class="text-muted"></span></div>
-                <div class="mb-2"><strong>Verkäufe (letzter Monat):</strong> <span id="verkaeufe" class="text-muted"></span></div>
-                <div class="mb-2"><strong>Umsatz (letzter Monat):</strong> <span id="umsatz" class="text-muted"></span></div>
+                <div class="mb-2"><strong>Name:</strong> <span id="name"></span></div>
+                <div class="mb-2"><strong>Kaufpreis:</strong> <span id="kaufpreis"></span></div>
+                <div class="mb-2"><strong>Bestand:</strong> <span id="bestand"></span></div>
+                <div class="mb-2"><strong>Durchschnittlicher Verkaufspreis:</strong> <span id="durchschnittlicherVKP"></span></div>
+                <div class="mb-2"><strong>Verkäufe (letzter Monat):</strong> <span id="verkaeufe"></span></div>
+                <div class="mb-2"><strong>Umsatz (letzter Monat):</strong> <span id="umsatz"></span></div>
             </div>
         </div>
     </div>

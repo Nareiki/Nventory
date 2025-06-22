@@ -1,6 +1,5 @@
 <?php
 require_once "../connection.php";
-header('Content-Type: application/json');
 
 $conn = getDBConnection();
 
@@ -25,7 +24,7 @@ $sql = "
     FROM Artikel a
     LEFT JOIN transaktions t ON a.Artikelnummer = t.Artikelnummer
     WHERE a.Artikelnummer = ?
-    -- AND Verkaufsdatum >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+     -- AND Verkaufsdatum >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
     GROUP BY t.Artikelnummer, t.Produktname, a.Menge, a.Kaufpreis;
 ";
 
