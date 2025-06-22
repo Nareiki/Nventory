@@ -5,4 +5,4 @@ session_destroy();
 
 setcookie("rememberedUsername", "", time() - 3600, "/"); // Cookie löschen
 
-header("Location: loginPage.php");
+header("Location: ../loginPage.php");
