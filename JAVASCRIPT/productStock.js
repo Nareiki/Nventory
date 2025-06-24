@@ -1,4 +1,3 @@
-
     // Suchfunktion
     document.getElementById('searchInput').addEventListener('input', function() {
     const searchTerm = this.value.toLowerCase();
@@ -13,7 +12,7 @@
     row.style.display = isVisible ? '' : 'none';
 
     if (isVisible) visibleRows++;
-});
+    });
 
     // "Keine Ergebnisse" Zeile anzeigen, wenn keine Treffer
     const noDataRow = document.querySelector('.no-data');
@@ -27,7 +26,7 @@
     td.textContent = 'Keine passenden Artikel gefunden';
     tr.appendChild(td);
     tbody.appendChild(tr);
-} else if (visibleRows > 0) {
+    } else if (visibleRows > 0) {
     const noDataSearchRow = document.querySelector('.no-data-search');
     if (noDataSearchRow) noDataSearchRow.remove();
 }
@@ -187,3 +186,4 @@
     // location.reload();
 }
 });
+

@@ -200,5 +200,5 @@ $result = $conn->query($sql);
 include("HTML/footer.html");
 ?>
 
-
+    <script src="JAVASCRIPT/authentificationCheck.js"></script>
     <script src="JAVASCRIPT/productStock.js"></script>

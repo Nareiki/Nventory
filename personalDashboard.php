@@ -81,6 +81,7 @@ $labels=$values=[];for($i=6;$i>=0;$i--){$d=date('Y-m-d',strtotime("-$i day"));$l
   </main>
 </div>
 <script>
+  <script src="JAVASCRIPT/authentificationCheck.js"></script>
   document.addEventListener('DOMContentLoaded',()=>{
     new Chart(document.getElementById('salesChart'),{
       type:'bar',

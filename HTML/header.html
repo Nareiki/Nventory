@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Nventory</title>
-    <link rel="stylesheet" href="../CSS/header.css">
+    <link rel="stylesheet" href="./CSS/header.css">
 </head>
 <body>
-<div class = "headerContainer">
- <!--   <div class = "headerItemLeft"><a href="contact.php"></a></div> -->
-    <div class = "headerItemMiddle"><a href="index.php"><img src="../pictures/logoTest_transparent.png" height=" 70px" ></a></div>
-  <!--  <div class = "headerItemRight"><a href="login.php"><img src="../pictures/icons/login-icon.svg" height=" 30px" ></a></div> -->
+<div class="headerContainer">
+    <div class="headerItemMiddle">
+        <a href="index.php">
+            <img src="./pictures/logoTest_transparent.png" height="70px">
+        </a>
+    </div>
+    <div class="headerItemRight" id="authButtonContainer">
+        <!-- JS wird hier Login/Logout einfügen -->
+    </div>
 </div>
+
+<script src="./JAVASCRIPT/header.js"></script>
 </body>
 </html>

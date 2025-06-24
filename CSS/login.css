@@ -1,0 +1,214 @@
+/* Allgemeine Einstellungen und Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f9fafb;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Container-Styles */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    animation: slideIn 1s ease-out 0s forwards;
+}
+
+.form-container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* Überschriften und Text */
+h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #718096;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+/* Formular-Elemente */
+.form-group {
+    margin-bottom: 24px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #4a5568;
+    font-size: 15px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    color: #2d3748;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+    outline: none;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    background-color: #fff;
+}
+
+/* Password Field mit Show/Hide Button */
+.password-input-container {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #718096;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Verhindert Outline beim Fokussieren */
+    outline: none;
+}
+
+.toggle-password:focus {
+    /* Optional: Subtiler Fokus-Indikator ohne Border */
+    color: #4a5568;
+}
+
+/* Checkbox-Styling */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+}
+
+.checkbox-container label {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.forgot-password {
+    font-size: 14px;
+    color: #3182ce;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #2c5282;
+    text-decoration: underline;
+}
+
+/* Button-Styling */
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background-color: #959595;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #757575;
+}
+
+/* Sign-up Link */
+.signup-link {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 14px;
+    color: #718096;
+}
+
+.signup-link a {
+    color: #3182ce;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.signup-link a:hover {
+    color: #2c5282;
+    text-decoration: underline;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 30px 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .forgot-password {
+        margin-top: 12px;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%); /* Startposition außerhalb des Bildschirms auf der rechten Seite */
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0); /* Endposition in der Mitte */
+        opacity: 1;
+    }
+}

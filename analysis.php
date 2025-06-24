@@ -68,5 +68,6 @@ usort($rows, fn($a,$b) => ($a['days']??PHP_INT_MAX) <=> ($b['days']??PHP_INT_MAX
       </tbody>
     </table>
   </main>
+  <script src="JAVASCRIPT/authentificationCheck.js"></script>
 </body>
 </html>

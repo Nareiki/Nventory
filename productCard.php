@@ -37,6 +37,7 @@
 </div>
 
 <script>
+  <script src="JAVASCRIPT/authentificationCheck.js"></script>
   // JavaScript-Code, um die Karten zu duplizieren
   const cardContainer = document.getElementById('card-container');
   const cardTemplate = document.getElementById('card-template');

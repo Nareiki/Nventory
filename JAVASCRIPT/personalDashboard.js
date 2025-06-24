@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.querySelector('.sideBarOuterContainer');
+
+    //const sidebar = document.querySelector('.sideBarOuterContainer');
     const sidebarItems = document.querySelectorAll('.sidebarItem');
     let enterTimeout = null;
     let leaveTimeout = null;
@@ -47,4 +48,4 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }, delay);
     });
-});
+})
