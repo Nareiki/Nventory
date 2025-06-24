@@ -15,6 +15,9 @@ export class User {
     @Column({ type: 'int' })
     warehouseID: number
 
+    @Column({ type: 'varchar', length: 30 })
+    status: string
+
     @ManyToOne(() => Warehouse)
     @JoinColumn({ name: 'warehouseID' })
     warehouse: Warehouse
