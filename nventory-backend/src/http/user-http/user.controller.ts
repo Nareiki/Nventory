@@ -1,11 +1,13 @@
 import { Body, Controller, Get, Param, Post, Put, Delete, BadRequestException, UseGuards } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from '@nestjs/passport';
+import { UserService } from 'src/core/user/user.service';
 
 @Controller('user')
 export class UserController {
     constructor(
-        private readonly userService: any,
+        private readonly userService: UserService,
         private readonly jwtService: JwtService
     ) { }
 
@@ -57,8 +59,5 @@ export class UserController {
         const { userPassword, ...userWithoutPassword } = user;
         return { token, user: userWithoutPassword };
     }
-}
-function AuthGuard(arg0: string): Function | import("@nestjs/common").CanActivate {
-    throw new Error('Function not implemented.');
 }
 
