@@ -1,2 +1,2 @@
-nventory-backend/node_modules/*
-nventory-backend/dist
+node_modules
+dist
