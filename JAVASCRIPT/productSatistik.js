@@ -17,10 +17,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!json.success) throw new Error(json.error || "Fehler beim Abruf.");
 
         document.getElementById("name").textContent = json.data.Produktname;
-        document.getElementById("kaufpreis").textContent = json.data.Kaufpreis;
+        document.getElementById("kaufpreis").textContent = `${Number(json.data.DurchschnittlicherKaufpreis || 0).toFixed(2)} €`;
         document.getElementById("bestand").textContent = json.data.Bestand ?? "0";
         document.getElementById("durchschnittlicherVKP").textContent = `${Number(json.data.DurchschnittlicherVerkaufspreis || 0).toFixed(2)} €`;
-        document.getElementById("verkaeufe").textContent = json.data.Verkaeufe ?? "0";
+        document.getElementById("verkaeufe").textContent = json.data.Verkaufsmenge ?? "0";
         document.getElementById("umsatz").textContent = `${Number(json.data.Gesamtumsatz || 0).toFixed(2)} €`;
 
     } catch (err) {

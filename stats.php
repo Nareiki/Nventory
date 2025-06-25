@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistiken</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="CSS/stats.css">
 </head>
 <body>
@@ -15,12 +16,12 @@
     </div>
 
     <div class="container">
-        <table>
+        <table class="table table-dark">
             <thead>
             <tr>
-                <th>Kategorie</th>
-                <th>Produktname</th>
-                <th>Wert</th>
+                <th scope="col">Kategorie</th>
+                <th scope="col">Produktname</th>
+                <th scope="col">Wert</th>
             </tr>
             </thead>
             <tbody id="statistikTabelle">
@@ -31,11 +32,11 @@
 
     <div class="container">
         <h3>Artikel nach Verkaufsmenge</h3>
-        <table>
+        <table class="table table-dark">
             <thead>
             <tr>
-                <th>Produktname</th>
-                <th>Verkaufte Menge</th>
+                <th scope="col">Produktname</th>
+                <th scope="col">Verkaufte Menge</th>
             </tr>
             </thead>
             <tbody id="tabelleMenge"></tbody>
@@ -44,11 +45,11 @@
 
     <div class="container">
         <h3>Artikel nach durchschnittlichem DB</h3>
-        <table>
+        <table  class="table table-dark">
             <thead>
             <tr>
-                <th>Produktname</th>
-                <th>Durchschnittlicher DB (€)</th>
+                <th scope="col">Produktname</th>
+                <th scope="col">Durchschnittlicher DB (€)</th>
             </tr>
             </thead>
             <tbody id="tabelleDB"></tbody>
