@@ -43,11 +43,13 @@ usort($rows, fn($a,$b) => ($a['days']??PHP_INT_MAX) <=> ($b['days']??PHP_INT_MAX
     <img src="pictures/logoTest_transparent.png" alt="Home">
   </a>
 </header>
+ 
+<div class="wrapper">
   <nav class="sidebar">
-    <a class="nav-item" href="personalDashboard.php">Dashboard</a>
-    <a class="nav-item" href="transactions.php">Transaktionen</a>
-    <a class="nav-item active" href="analysis.php">Nutzwertanalyse</a>
-    <a class="nav-item" href="addProduct.php">Neu-Produkt</a> 
+    <?php 
+      $current = 'analysis'; // Aktuelle Seite
+      include 'includes/sidebar.php'; 
+    ?>   
   </nav>
 
   <main class="content">

@@ -47,12 +47,9 @@ $labels=$values=[];for($i=6;$i>=0;$i--){$d=date('Y-m-d',strtotime("-$i day"));$l
 <header class="topbar"><a href="index.php"><img src="pictures/logoTest_transparent.png" alt="Home"></a></header>
 
 <div class="wrapper">
-  <nav class="sidebar">
-    <a class="nav-item active" href="personalDashboard.php">Dashboard</a>
-    <a class="nav-item" href="transactions.php">Transaktionen</a>
-    <a class="nav-item" href="analysis.php">Nutzwertanalyse</a>
-    <a class="nav-item" href="addProduct.php">Neu‑Produkt</a>
-  </nav>
+  <?php 
+    $current = 'dashboard'; // Aktuelle Seite
+    include 'includes/sidebar.php'; ?>   <!--Sidebar-->
   <main class="content">
     <h1>Dashboard</h1>
     <section class="cards">

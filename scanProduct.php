@@ -17,7 +17,7 @@
 <body class = "newProductBody">
     <div class="articleOuterContainer">
         <!-- hier kommt unsere getProductData.php rein -->
-        <div id="articleInfo" class="infoWrapper" style="display:none;"></div>
+        <div id="articleInfo" style="display:none;"></div>
     </div>
     
 <div class = "outerContainer">

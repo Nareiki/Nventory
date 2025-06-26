@@ -77,12 +77,26 @@ htmlscanner.render(onScanSuccess);
   }
 
   // Button-Handler
-  btnIn.addEventListener('click', () => {
-    const n = parseInt(qtyInput.value, 10) || 1;
-    updateStock(+Math.abs(n));
-  });
-  btnOut.addEventListener('click', () => {
-    const n = parseInt(qtyInput.value, 10) || 1;
-    updateStock(-Math.abs(n));
-  });
+// ---------------------------------------------------------------------
+// Button-Handler  (diesen Teil ersetzen)
+// ---------------------------------------------------------------------
+btnIn.addEventListener('click', () => {
+  const n = parseInt(qtyInput.value, 10) || 1;      // positive Zahl
+  const delta = +Math.abs(n);                       // Einbuchen = +n
+
+  // Bestätigung anzeigen
+  if (confirm(`Möchten Sie den Bestand um +${delta} Stück erhöhen?`)) {
+    updateStock(delta);        // nur wenn OK
+  }
+});
+
+btnOut.addEventListener('click', () => {
+  const n = parseInt(qtyInput.value, 10) || 1;      // positive Zahl
+  const delta = -Math.abs(n);                       // Ausbuchen = -n
+
+  // Bestätigung anzeigen
+  if (confirm(`Möchten Sie den Bestand um ${delta} Stück verringern?`)) {
+    updateStock(delta);        // nur wenn OK
+  }
+});
 });

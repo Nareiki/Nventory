@@ -32,11 +32,12 @@ $rows = $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
     <img src="pictures/logoTest_transparent.png" alt="Home">
   </a>
 </header>
+<div class="wrapper">  
   <nav class="sidebar">
-    <a class="nav-item" href="personalDashboard.php">Dashboard</a>
-    <a class="nav-item active" href="transactions.php">Transaktionen</a>
-    <a class="nav-item" href="analysis.php">Nutzwertanalyse</a>
-    <a class="nav-item" href="addProduct.php">Neu-Produkt</a>
+    <?php 
+      $current = 'transactions'; // Aktuelle Seite
+      include 'includes/sidebar.php'; 
+    ?>  
   </nav>
   <main class="content">
     <h1>Transaktionen (Ein- und Ausbuchungen)</h1>
