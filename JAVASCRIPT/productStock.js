@@ -48,19 +48,11 @@
 });
 
     // Filter zurücksetzen
-    document.getElementById('clearFilter').addEventListener('click', function() {
-    document.getElementById('searchInput').value = '';
-    const rows = document.querySelectorAll('tbody tr');
-
-    rows.forEach(row => {
-    if (!row.classList.contains('no-data-search')) {
-    row.style.display = '';
-}
+    document.getElementById('clearFilter').addEventListener('click', () => {
+    window.location.href = window.location.pathname;   
 });
 
-    const noDataSearchRow = document.querySelector('.no-data-search');
-    if (noDataSearchRow) noDataSearchRow.remove();
-});
+    
 
     // Modal-Funktionalität
     const modal = document.getElementById('editModal');

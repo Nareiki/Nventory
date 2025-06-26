@@ -27,41 +27,7 @@ SET time_zone = "+00:00";
 -- Tabellenstruktur für Tabelle `Artikel`
 --
 
-CREATE TABLE `Artikel` (
-  `Artikelnummer` int(11) NOT NULL,
-  `Produktname` varchar(50) NOT NULL,
-  `Information` varchar(250) DEFAULT NULL,
-  `Menge` int(11) DEFAULT NULL CHECK (`Menge` >= 0),
-  `Kaufpreis` decimal(10,2) DEFAULT NULL CHECK (`Kaufpreis` >= 0)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Daten für Tabelle `Artikel`
---
-
-INSERT INTO `Artikel` (`Artikelnummer`, `Produktname`, `Information`, `Menge`, `Kaufpreis`) VALUES
-(23, 'PS5 - SLIM', 'neues Modell v1.5', 4, 399.99);
-
---
--- Indizes der exportierten Tabellen
---
-
---
--- Indizes für die Tabelle `Artikel`
---
-ALTER TABLE `Artikel`
-  ADD PRIMARY KEY (`Artikelnummer`);
-
---
--- AUTO_INCREMENT für exportierte Tabellen
---
-
---
--- AUTO_INCREMENT für Tabelle `Artikel`
---
-ALTER TABLE `Artikel`
-  MODIFY `Artikelnummer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

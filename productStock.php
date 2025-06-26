@@ -50,7 +50,7 @@ $result = $conn->query($sql);
                 <span>+</span> Produkt hinzufügen
             </a>
             <div class="search-container">
-                <button class="filter-btn" id="clearFilter">Filter zurücksetzen</button>
+                <button type="button" class="filter-btn" id="clearFilter">Filter zurücksetzen</button>
                 <div class="search-box">
                     <input type="text" id="searchInput" placeholder="Suchen...">
                     <button id="clearSearch">×</button>
@@ -200,5 +200,5 @@ $result = $conn->query($sql);
 include("HTML/footer.html");
 ?>
 
-    <script src="JAVASCRIPT/authentificationCheck.js"></script>
+    <!--<script src="JAVASCRIPT/authentificationCheck.js"></script> -->
     <script src="JAVASCRIPT/productStock.js"></script>
