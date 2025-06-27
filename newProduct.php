@@ -23,7 +23,7 @@
     </div>
 </div>
 </div>
-<script src="JAVASCRIPT/authentificationCheck.js"></script>
+<!-- <script src="JAVASCRIPT/authentificationCheck.js"></script> -->
 <script
         src="https://unpkg.com/html5-qrcode">
 </script>

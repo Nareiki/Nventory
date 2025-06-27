@@ -33,7 +33,7 @@ usort($rows, fn($a,$b) => ($a['days']??PHP_INT_MAX) <=> ($b['days']??PHP_INT_MAX
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
     rel="stylesheet">
-
+    <link rel="stylesheet" href="CSS/layout.css">   
     <link rel="stylesheet" href="CSS/analysis.css">
 </head>
 
@@ -45,7 +45,6 @@ usort($rows, fn($a,$b) => ($a['days']??PHP_INT_MAX) <=> ($b['days']??PHP_INT_MAX
 </header>
  
 <div class="wrapper">
-  <nav class="sidebar">
     <?php 
       $current = 'analysis'; // Aktuelle Seite
       include 'includes/sidebar.php'; 
@@ -70,6 +69,6 @@ usort($rows, fn($a,$b) => ($a['days']??PHP_INT_MAX) <=> ($b['days']??PHP_INT_MAX
       </tbody>
     </table>
   </main>
-  <script src="JAVASCRIPT/authentificationCheck.js"></script>
+  <!-- <script src="JAVASCRIPT/authentificationCheck.js"></script> -->
 </body>
 </html>

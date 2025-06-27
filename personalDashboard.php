@@ -39,8 +39,8 @@ $labels=$values=[];for($i=6;$i>=0;$i--){$d=date('Y-m-d',strtotime("-$i day"));$l
   <title>Nventory · Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="CSS/layout.css">   
   <link rel="stylesheet" href="CSS/dashboard.css">
-  <!-- Styles in CSS/personalDashboard.css -->
 </head>
 <body>
 <!-- Header mit Logo, führt zur Startseite -->
@@ -77,7 +77,8 @@ $labels=$values=[];for($i=6;$i>=0;$i--){$d=date('Y-m-d',strtotime("-$i day"));$l
     </section>
   </main>
 </div>
-<script src="JAVASCRIPT/authentificationCheck.js">
+<!-- <script src="JAVASCRIPT/authentificationCheck.js"> -->
+  <script>
   document.addEventListener('DOMContentLoaded',()=>{
     new Chart(document.getElementById('salesChart'),{
       type:'bar',

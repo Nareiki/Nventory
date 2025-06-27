@@ -24,7 +24,8 @@ $rows = $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
   <meta charset="UTF-8">
   <title>Transaktionen · Nventory</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="CSS/transactions.css">
+  <link rel="stylesheet" href="CSS/layout.css">   
+  <link rel="stylesheet" href="CSS/transactions.css">
 </head>
 <body>
 <header class="topbar">
@@ -33,12 +34,10 @@ $rows = $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
   </a>
 </header>
 <div class="wrapper">  
-  <nav class="sidebar">
     <?php 
       $current = 'transactions'; // Aktuelle Seite
       include 'includes/sidebar.php'; 
     ?>  
-  </nav>
   <main class="content">
     <h1>Transaktionen (Ein- und Ausbuchungen)</h1>
 
