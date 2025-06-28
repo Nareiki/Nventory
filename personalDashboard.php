@@ -6,12 +6,12 @@ error_reporting(E_ALL);
 $conn = getDBConnection();
 $threshold = 5;
 
-// === Kennzahlen =========================================================
+//Kennzahlen
 $totalProducts  = $conn->query("SELECT COUNT(*) FROM Artikel")->fetch_row()[0];
 $totalQuantity  = $conn->query("SELECT IFNULL(SUM(Menge),0) FROM Artikel")->fetch_row()[0];
 $inventoryValue = $conn->query("SELECT IFNULL(SUM(Menge*Kaufpreis),0) FROM Artikel")->fetch_row()[0];
 
-// === Low‑Stock Artikel ==================================================
+//Low Stock Artikel
 $lowStmt = $conn->prepare("SELECT Artikelnummer, Produktname, Menge FROM Artikel WHERE Menge<=? ORDER BY Menge ASC, Produktname");
 $lowStmt->bind_param('i',$threshold);
 $lowStmt->execute();
@@ -19,18 +19,40 @@ $lowItems = $lowStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $lowStmt->close();
 $lowCnt = count($lowItems);
 
-// === Top‑5 Bestseller (30 Tage) ========================================
-$topQ = "SELECT A.Artikelnummer, A.Produktname, SUM(-S.delta) sold
-         FROM StockTransactions S
-         JOIN Artikel A ON A.Artikelnummer=S.artikelnummer
-         WHERE S.delta<0 AND S.created_at>=DATE_SUB(CURDATE(),INTERVAL 30 DAY)
-         GROUP BY A.Artikelnummer ORDER BY sold DESC LIMIT 5";
+//Top‑5 Bestseller 30 Tage
+$topQ = "
+  SELECT A.Artikelnummer,
+         A.Produktname,
+         SUM(T.transactionAmount)          AS sold
+  FROM   ArticleTransactions T
+  JOIN   Artikel A ON A.Artikelnummer = T.articleID
+  WHERE  T.transactionType = 'out'                                 -- nur Verkäufe
+    AND  T.transactionTimestamp >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+  GROUP  BY T.articleID
+  ORDER  BY sold DESC
+  LIMIT  5";
 $topItems = $conn->query($topQ)->fetch_all(MYSQLI_ASSOC);
 
-// === Verkäufe letzte 7 Tage ============================================
-$raw = $conn->query("SELECT DATE(created_at) d, SUM(-delta) s FROM StockTransactions WHERE delta<0 AND created_at>=DATE_SUB(CURDATE(),INTERVAL 6 DAY) GROUP BY d");
-$tmp=[];while($r=$raw->fetch_assoc())$tmp[$r['d']]=$r['s'];
-$labels=$values=[];for($i=6;$i>=0;$i--){$d=date('Y-m-d',strtotime("-$i day"));$labels[]=date('d.m',strtotime($d));$values[]=$tmp[$d]??0;}
+// Verkäufe letzte 7 Tage
+$salesSql = "
+  SELECT DATE(T.transactionTimestamp) AS d,
+         SUM(T.transactionAmount) AS s
+  FROM   ArticleTransactions T
+  WHERE  T.transactionType = 'out'
+    AND  T.transactionTimestamp >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+  GROUP  BY d";
+$raw = $conn->query($salesSql);
+
+$tmp = [];
+while ($r = $raw->fetch_assoc()) {
+    $tmp[$r['d']] = $r['s'];   // am jeweiligen Tag verkaufte Stückzahl
+}
+$labels = $values = [];
+for ($i = 6; $i >= 0; $i--) {
+    $d          = date('Y-m-d', strtotime("-$i day"));
+    $labels[]   = date('d.m', strtotime($d));
+    $values[]   = $tmp[$d] ?? 0;
+}
 ?>
 <!DOCTYPE html>
 <html lang="de">
