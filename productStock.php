@@ -61,7 +61,6 @@ $result = $conn->query($sql);
         <table>
             <thead>
             <tr>
-                <th>QR</th>
                 <th class="sortable">
                     <a href="?sort=artikelnummer&dir=<?= htmlspecialchars($toggleDir) ?>" title="Nach Artikelnummer sortieren">
                         Artikelnummer
@@ -96,6 +95,7 @@ $result = $conn->query($sql);
                     <?php endif ?>
                     </a>
                 </th>
+                <th>Stats</th>
                 <th>Produkt Bearbeiten</th>
             </tr>
             </thead>
@@ -107,13 +107,6 @@ $result = $conn->query($sql);
                 while($row = $result->fetch_assoc()) {
                     // QR-Code für die Artikelnummer generieren
                     $artikelnummer = $row["Artikelnummer"];
-                    $qrCodeFileName = "qrcodes/qrcode-$artikelnummer.png";
-
-                    // Überprüfen, ob der QR-Code bereits existiert, wenn nicht, erstellen
-                    if (!file_exists($qrCodeFileName)) {
-                        // Hinweis: Stelle sicher, dass der Ordner "qrcodes" existiert und schreibbar ist
-                        // Alternativ kannst du hier auch Code für QR-Code-Generierung mit PHP hinzufügen
-                    }
 
                     echo "<tr data-artikelnr='" . htmlspecialchars($artikelnummer) . "' 
                          data-name='" . htmlspecialchars($row["Produktname"]) . "' 
@@ -121,22 +114,17 @@ $result = $conn->query($sql);
                          data-menge='" . htmlspecialchars($row["Menge"]) . "' 
                          data-preis='" . htmlspecialchars($row["Kaufpreis"]) . "'>";
 
-                    // QR-Code oder Platzhalter anzeigen
-                    echo "<td class='qr-code-cell'>";
-                    if (file_exists($qrCodeFileName)) {
-                        echo "<img src='" . htmlspecialchars($qrCodeFileName) . "' alt='QR-Code'>";
-                    } else {
-                        echo "/";
-                    }
-                    echo "</td>";
-
                     echo "<td>" . htmlspecialchars($row["Artikelnummer"]) . "</td>";
                     echo "<td>" . htmlspecialchars($row["Produktname"]) . "</td>";
                     echo "<td>" . htmlspecialchars($row["Information"]) . "</td>";
                     echo "<td>" . htmlspecialchars($row["Menge"]) . "</td>";
                     echo "<td class='price'>" . number_format($row["Kaufpreis"], 2, ',', '.') . " €</td>";
+                    echo "<td>
+                            <a href='productStats.php?artikelnummer=" . urlencode($artikelnummer) . "'>
+                                <img src='/pictures/icons/chart-simple-solid.svg' alt='Statistik anzeigen' style='width:24px; height:24px;'>
+                            </a>
+                        </td>";
                     echo "<td><a href='#' class='edit-product'>&#128221;</a></td>";
-                    echo "</tr>";
                 }
             } else {
                 echo "<tr><td colspan='7' class='no-data'>Keine Artikel gefunden</td></tr>";

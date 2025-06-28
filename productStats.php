@@ -19,8 +19,8 @@
                 <div id="produkt-info" class="mb-3"></div>
 
                 <div class="mb-2"><strong>Name:</strong> <span id="name"></span></div>
-                <div class="mb-2"><strong>Kaufpreis:</strong> <span id="kaufpreis"></span></div>
                 <div class="mb-2"><strong>Bestand:</strong> <span id="bestand"></span></div>
+                <div class="mb-2"><strong>Durchschnittlicher Kaufpreis:</strong> <span id="kaufpreis"></span></div>
                 <div class="mb-2"><strong>Durchschnittlicher Verkaufspreis:</strong> <span id="durchschnittlicherVKP"></span></div>
                 <div class="mb-2"><strong>Verkäufe (letzter Monat):</strong> <span id="verkaeufe"></span></div>
                 <div class="mb-2"><strong>Umsatz (letzter Monat):</strong> <span id="umsatz"></span></div>

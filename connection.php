@@ -2,7 +2,7 @@
 $host = 'localhost';
 $dbname = 'productsDB';
 $username = 'root';
-$password = 'cyfcaj-mepHyh-mitpe9';
+$password = ''; ///cyfcaj-mepHyh-mitpe9
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
@@ -17,7 +17,7 @@ function getDBConnection() {
     // Datenbankparameter
     $host = "localhost";      // Hostname des Datenbankservers
     $username = "root";  // Datenbankbenutzername
-    $password = "cyfcaj-mepHyh-mitpe9";      // Datenbankpasswort
+    $password = "";      // Datenbankpasswort
     $dbname = "productsDB";      // Name der Datenbank
 
     // Neue Verbindung erstellen
