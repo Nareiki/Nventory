@@ -2,7 +2,7 @@
 $host = 'localhost';
 $dbname = 'productsDB';
 $username = 'root';
-$password = ''; ///cyfcaj-mepHyh-mitpe9
+$password = ''; //cyfcaj-mepHyh-mitpe9
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);

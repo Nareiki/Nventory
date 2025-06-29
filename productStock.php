@@ -138,7 +138,7 @@ $result = $conn->query($sql);
                     echo "<td class='price'>" . number_format($row["Kaufpreis"], 2, ',', '.') . " €</td>";
                     echo "<td>
                             <a href='productStats.php?artikelnummer=" . urlencode($artikelnummer) . "'>
-                                <img src='/pictures/icons/chart-simple-solid.svg' alt='Statistik anzeigen' style='width:24px; height:24px;'>
+                                <img src='pictures/icons/chart-simple-solid.svg' alt='Statistik anzeigen' style='width:24px; height:24px;'>
                             </a>
                         </td>";
                     echo "<td><a href='#' class='edit-product'>&#128221;</a></td>";
@@ -174,15 +174,6 @@ $result = $conn->query($sql);
                 </div>
 
                 <div class="form-group">
-                    <label for="menge">Menge:</label>
-                    <div class="quantity-control">
-                        <button type="button" id="decrease">-</button>
-                        <input type="number" id="menge" name="menge" min="0">
-                        <button type="button" id="increase">+</button>
-                    </div>
-                </div>
-
-                <div class="form-group">
                     <label for="preis">Preis (€):</label>
                     <input type="text" id="preis" name="preis">
                 </div>
@@ -197,8 +188,8 @@ $result = $conn->query($sql);
             </form>
         </div>
     </div>
-
-
+        <!--<script src="JAVASCRIPT/authentificationCheck.js"></script> -->
+        <script src="JAVASCRIPT/productStock.js"></script>
     </body>
     </html>
 
@@ -206,5 +197,4 @@ $result = $conn->query($sql);
 include("HTML/footer.html");
 ?>
 
-    <!--<script src="JAVASCRIPT/authentificationCheck.js"></script> -->
-    <script src="JAVASCRIPT/productStock.js"></script>
+

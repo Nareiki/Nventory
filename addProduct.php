@@ -155,9 +155,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </form>
             <?php endif; ?>
 
-            <div class="changeStock">
-                <p>Bereits angelegt? <a href="#"> Bestand anpassen</a></p>
-            </div>
         </div>
     </div>
     <!-- <script src="JAVASCRIPT/authentificationCheck.js"></script> -->

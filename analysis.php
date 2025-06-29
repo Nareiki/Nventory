@@ -17,7 +17,7 @@ $sql = "
                 END
             ),0)  AS sold30
     FROM    Artikel             A
-    LEFT JOIN ArticleTransaction T
+    LEFT JOIN ArticleTransactions T
            ON T.articleID = A.Artikelnummer
           AND T.transactionType = 'out'
           AND T.transactionTimestamp >= DATE_SUB(CURDATE(), INTERVAL {$thresholdDays} DAY)

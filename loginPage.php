@@ -34,7 +34,7 @@
                     <input type="checkbox" id="remember" name="remember">
                     <label for="remember">Angemeldet bleiben</label>
                 </div>
-                <a href="#" class="forgot-password">Passwort vergessen?</a>
+                
             </div>
 
             <button type="submit" class="submit-btn">Anmelden</button>

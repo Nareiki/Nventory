@@ -11,5 +11,8 @@ function navLink($href,$label,$slug,$current){
     navLink('transactions.php',    'Transaktionen',   'transactions',$current);
     navLink('analysis.php',        'Nutzwertanalyse', 'analysis',    $current);
     navLink('addProduct.php',      'Neu-Produkt',     'addProduct',  $current);
+    navLink('stats.php',      'Statistiken',     'stats',  $current);
+    navLink('scanProduct.php',      'Scanner',     'scanProduct',  $current);
+    navLink('productStock.php',      'Bestand',     'productStock',  $current);
   ?>
 </nav>

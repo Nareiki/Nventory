@@ -60,9 +60,6 @@
     const cancelBtn = document.getElementById('cancelEdit');
     const editButtons = document.querySelectorAll('.edit-product');
     const deleteBtn = document.getElementById('deleteProduct');
-    const increaseBtn = document.getElementById('increase');
-    const decreaseBtn = document.getElementById('decrease');
-    const mengeInput = document.getElementById('menge');
     const form = document.getElementById('editProductForm');
 
     // Edit-Button-Event für alle Produkte
@@ -75,7 +72,6 @@
         document.getElementById('artikelnummer').value = row.dataset.artikelnr;
         document.getElementById('produktname').value = row.dataset.name;
         document.getElementById('information').value = row.dataset.info;
-        document.getElementById('menge').value = row.dataset.menge;
         document.getElementById('preis').value = row.dataset.preis.replace(',', '.');
 
         // Modal öffnen
@@ -97,19 +93,6 @@
     window.addEventListener('click', function(event) {
     if (event.target === modal) {
     modal.style.display = 'none';
-}
-});
-
-    // Menge erhöhen
-    increaseBtn.addEventListener('click', function() {
-    mengeInput.value = parseInt(mengeInput.value) + 1;
-});
-
-    // Menge verringern
-    decreaseBtn.addEventListener('click', function() {
-    const currentValue = parseInt(mengeInput.value);
-    if (currentValue > 0) {
-    mengeInput.value = currentValue - 1;
 }
 });
 

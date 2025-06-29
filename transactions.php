@@ -13,7 +13,7 @@ $sql = "
             T.transactionPrice,
             A.Artikelnummer,
             A.Produktname
-    FROM    ArticleTransaction  T
+    FROM    ArticleTransactions  T
     JOIN    Artikel             A  ON A.Artikelnummer = T.articleID
     ORDER BY T.transactionTimestamp DESC
     LIMIT 1000";
