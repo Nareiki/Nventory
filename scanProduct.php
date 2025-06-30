@@ -27,6 +27,8 @@
             <div id="stockActions" class="articleActions" style="display:none;">
                 <label for="stockQty">Menge:</label>
                 <input type="number" id="stockQty" value="1" min="1"><br>
+                <label for="stockPrice">Preis:</label>
+                <input type="number" id="stockPrice" min="1"><br>
                 <button id="btnIn"  class="stockBtn">Einbuchen</button>
                 <button id="btnOut" class="stockBtn">Ausbuchen</button><br>
                 <span id="stockMsg" class="stockMsg"></span>

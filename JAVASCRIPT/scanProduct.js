@@ -13,7 +13,7 @@ function domReady(fn) {
 function getData(decodeText) {
     let articleNumber = decodeText;
 
-    fetch('/getProductData.php', {
+    fetch('./getProductData.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -30,7 +30,7 @@ function getData(decodeText) {
 
 domReady(function () {
   let currentArticleNr = null;
-  const actionsDiv = document.getElementById('stockActions');
+  const price = document.getElementById('stockPrice');
   const qtyInput   = document.getElementById('stockQty');
   const msgSpan    = document.getElementById('stockMsg');
   const btnIn      = document.getElementById('btnIn');
@@ -58,12 +58,17 @@ const htmlscanner = new Html5QrcodeScanner(
 htmlscanner.render(onScanSuccess);
 
   // Beestand wird upgedated mit Eingabe(delta) von User, sendet Ein-/Ausbuchungs-Delta an den Server
-    function updateStock(delta){
-        fetch('/updateStock.php', {
+    function updateStock(transactionTyp){
+        const qtyVal = qtyInput.value;
+        const priceVal = price.value; 
+        fetch('./updateStock.php', {
             method:'POST',
             headers:{'Content-Type':'application/x-www-form-urlencoded'},
-            body:`artikelnummer=${encodeURIComponent(currentArticleNr)}&delta=${delta}`
-        })
+            body: `artikelnummer=${encodeURIComponent(currentArticleNr)}&` +
+                  `transactionAmount=${encodeURIComponent(qtyVal)}&` +
+                  `transactionPrice=${encodeURIComponent(priceVal)}&` +
+                  `transactionType=${encodeURIComponent(transactionTyp)}`
+                    })
         .then(r => r.json())
         .then(json => {
             if (json.success) {
@@ -81,22 +86,16 @@ htmlscanner.render(onScanSuccess);
 // Button-Handler  (diesen Teil ersetzen)
 // ---------------------------------------------------------------------
 btnIn.addEventListener('click', () => {
-  const n = parseInt(qtyInput.value, 10) || 1;      // positive Zahl
-  const delta = +Math.abs(n);                       // Einbuchen = +n
-
-  // Bestätigung anzeigen
-  if (confirm(`Möchten Sie den Bestand um +${delta} Stück erhöhen?`)) {
-    updateStock(delta);        // nur wenn OK
+  const qtyVal = qtyInput.value;
+  if (confirm(`Möchten Sie den Bestand um +${qtyVal} Stück erhöhen?`)) {
+    updateStock('in');
   }
 });
 
 btnOut.addEventListener('click', () => {
-  const n = parseInt(qtyInput.value, 10) || 1;      // positive Zahl
-  const delta = -Math.abs(n);                       // Ausbuchen = -n
-
-  // Bestätigung anzeigen
-  if (confirm(`Möchten Sie den Bestand um ${delta} Stück verringern?`)) {
-    updateStock(delta);        // nur wenn OK
+  const qtyVal = qtyInput.value;
+  if (confirm(`Möchten Sie den Bestand um -${qtyVal} Stück verringern?`)) {
+    updateStock('out');
   }
 });
 });
