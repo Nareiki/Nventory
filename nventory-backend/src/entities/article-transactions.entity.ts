@@ -16,7 +16,7 @@ export class ArticleTransaction {
     transactionAmount: number
 
     @Column({ type: 'datetime2' })
-    transactionTimestamp: Timestamp
+    transactionTimestamp: Date
 
     @Column({ type: 'varchar', length: 5 })
     transactionType: string // 'in' or 'out'
