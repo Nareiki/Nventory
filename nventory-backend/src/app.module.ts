@@ -4,8 +4,6 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CatsModule } from './cats/cats.module';
 import { Warehouse } from './entities/warehouse.entity';
-import { WarehouseModule } from './core/warehouse/warehouse.module';
-import { WarehouseHttpModule } from './http/warehouse-http/warehouse-http.module';
 import { ShelfModule } from './core/shelf/shelf.module';
 import { ShelfHttpModule } from './http/shelf-http/shelf-http.module';
 import { ArticleHttpModule } from './http/article-http/article-http.module';
@@ -32,8 +30,6 @@ import { ArticleTransaction } from './entities/article-transactions.entity';
       synchronize: true,
     }),
     CatsModule,
-    WarehouseModule,
-    WarehouseHttpModule,
     ShelfModule,
     ShelfHttpModule,
     ArticleModule,

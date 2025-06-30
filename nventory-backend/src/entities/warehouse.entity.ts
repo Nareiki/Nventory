@@ -1,4 +1,4 @@
-import { Entity } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
 export class Warehouse {
@@ -11,6 +11,4 @@ export class Warehouse {
 
     @Column({ type: 'varchar', length: 255 })
     warehouseLocation: string
-
-
 }
