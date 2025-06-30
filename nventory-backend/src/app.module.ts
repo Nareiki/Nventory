@@ -15,6 +15,9 @@ import { ArticleModule } from './core/article/article.module';
 import { Shelf } from './entities/shelf.entity';
 import { Article } from './entities/article.entity';
 import { User } from './entities/user.entity';
+import { ArticleTransactionModule } from './core/article-transaction/article-transaction.module';
+import { ArticleTransactionHttpModule } from './http/article-transaction-http/article-transaction-http.module';
+import { ArticleTransaction } from './entities/article-transactions.entity';
 
 @Module({
   imports: [
@@ -25,7 +28,7 @@ import { User } from './entities/user.entity';
       username: 'root',
       password: 'P4ssw0rd12?',
       database: 'nventory',
-      entities: [Warehouse, Shelf, Article, User],
+      entities: [Warehouse, Shelf, Article, User, ArticleTransaction],
       synchronize: true,
     }),
     CatsModule,
@@ -36,7 +39,9 @@ import { User } from './entities/user.entity';
     ArticleModule,
     ArticleHttpModule,
     UserModule,
-    UserHttpModule
+    UserHttpModule,
+    ArticleTransactionModule,
+    ArticleTransactionHttpModule
   ],
   controllers: [AppController],
   providers: [AppService],
