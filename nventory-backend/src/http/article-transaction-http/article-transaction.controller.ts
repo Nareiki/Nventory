@@ -1,7 +1,10 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, Post, Body } from '@nestjs/common';
 import { ArticleTransactionService } from 'src/core/article-transaction/article-transaction.service';
-import { TopSoldArticleDto } from 'src/core/article-transaction/dto/top-sold-article.dto';
 import { SalesPerDayDto } from 'src/core/article-transaction/dto/sales-per-day.dto';
+import { ArticleWithSoldDto } from 'src/core/article-transaction/dto/article-with-sold.dto';
+import { TransactionListDto } from 'src/core/article-transaction/dto/transaction-list.dto';
+import { CreateTransactionDto } from 'src/core/article-transaction/dto/create-transaction.dto';
+import { TopSoldArticleDto } from 'src/core/article-transaction/dto/top-sold-article.dto';
 
 @Controller('article-transaction')
 export class ArticleTransactionController {
@@ -10,7 +13,7 @@ export class ArticleTransactionController {
 
 
     @Get('top-sold')
-    async topSold(@Query() query: TopSoldArticleDto) {
+    async topSold(): Promise<TopSoldArticleDto[]> {
         return this.articleTransactionService.findTopSoldItems();
     }
 
@@ -19,14 +22,23 @@ export class ArticleTransactionController {
         return this.articleTransactionService.findSalesPerDay();
     }
 
-    //   SELECT A.Artikelnummer,
-    //          A.Produktname,
-    //          SUM(T.transactionAmount)          AS sold
-    //   FROM   ArticleTransactions T
-    //   JOIN   Artikel A ON A.Artikelnummer = T.articleID
-    //   WHERE  T.transactionType = 'out'                                 -- nur Verkäufe
-    //     AND  T.transactionTimestamp >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
-    //   GROUP  BY T.articleID
-    //   ORDER  BY sold DESC
-    //   LIMIT  5";
+    @Get('with-sold')
+    async getArticlesWithSold30(@Query('days') days?: string): Promise<ArticleWithSoldDto[]> {
+        const daysNum = days ? parseInt(days, 10) : 30;
+        return this.articleTransactionService.getArticlesWithDays(daysNum);
+    }
+
+    @Get('transactions')
+    async getTransactionList(): Promise<TransactionListDto[]> {
+        return this.articleTransactionService.getTransactionList();
+    }
+
+    @Post('transaction')
+    async createTransaction(@Body() dto: CreateTransactionDto) {
+        // If no timestamp is provided, set it to now
+        if (!dto.transactionTimestamp) {
+            dto.transactionTimestamp = new Date();
+        }
+        return this.articleTransactionService.createTransaction(dto);
+    }
 }

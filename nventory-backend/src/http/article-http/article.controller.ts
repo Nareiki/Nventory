@@ -5,10 +5,7 @@ import { Article } from 'src/entities/article.entity';
 
 @Controller('article')
 export class ArticleController {
-
-    constructor(private articleService: ArticleService) {
-
-    }
+    constructor(private readonly articleService: ArticleService) { }
 
     @Get()
     async findAll(@Query() query: FindArticleDto) {

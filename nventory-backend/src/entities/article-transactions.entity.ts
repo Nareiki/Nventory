@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Timestamp } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Article } from "./article.entity";
 
 @Entity('article_transactions')
@@ -15,7 +15,7 @@ export class ArticleTransaction {
     @Column({ type: 'int' })
     transactionAmount: number
 
-    @Column({ type: 'date' })
+    @Column({ type: 'timestamp' })
     transactionTimestamp: Date
 
     @Column({ type: 'varchar', length: 5 })
