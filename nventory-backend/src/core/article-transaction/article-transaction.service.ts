@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleTransaction } from 'src/entities/article-transactions.entity';
 import { Repository } from 'typeorm';
 import { TopSoldArticleDto } from './dto/top-sold-article.dto';
+import { SalesPerDayDto } from './dto/sales-per-day.dto';
 
 @Injectable()
 export class ArticleTransactionService {
@@ -24,5 +25,16 @@ export class ArticleTransactionService {
             .orderBy('sold', 'DESC')
             .limit(5);
         return qb.getRawMany<TopSoldArticleDto>();
+    }
+
+    async findSalesPerDay(): Promise<SalesPerDayDto[]> {
+        const qb = this.articleTransactionRepository.createQueryBuilder('t')
+            .select('DATE(t.transactionTimestamp)', 'date')
+            .addSelect('SUM(t.transactionAmount)', 'sales')
+            .where('t.transactionType = :type', { type: 'out' })
+            .andWhere('t.transactionTimestamp >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)')
+            .groupBy('date')
+
+        return qb.getRawMany<SalesPerDayDto>();
     }
 }

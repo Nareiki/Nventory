@@ -1,6 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ArticleTransactionService } from 'src/core/article-transaction/article-transaction.service';
 import { TopSoldArticleDto } from 'src/core/article-transaction/dto/top-sold-article.dto';
+import { SalesPerDayDto } from 'src/core/article-transaction/dto/sales-per-day.dto';
 
 @Controller('article-transaction')
 export class ArticleTransactionController {
@@ -11,6 +12,11 @@ export class ArticleTransactionController {
     @Get('top-sold')
     async topSold(@Query() query: TopSoldArticleDto) {
         return this.articleTransactionService.findTopSoldItems();
+    }
+
+    @Get('sales-per-day')
+    async salesPerDay(): Promise<SalesPerDayDto[]> {
+        return this.articleTransactionService.findSalesPerDay();
     }
 
     //   SELECT A.Artikelnummer,
