@@ -7,9 +7,11 @@ class UserRegistration {
     
     public function __construct() {
         $this->con = getDBConnection();
+        error_log("[UserRegistration] DB connection established");
     }
 
     public function register(array $data): array {
+        error_log("[UserRegistration] Register called with data: " . json_encode($data));
         $firstname = $data["firstname"] ?? '';
         $lastname = $data["lastname"] ?? '';
         $company = $data["company"] ?? '';
@@ -19,24 +21,29 @@ class UserRegistration {
 
 
         $this->validate($username, $password, $firstname, $lastname, $email);
+        error_log("[UserRegistration] Validation errors: " . json_encode($this->errors));
 
         if (!empty($this->errors)) {
             return ["success" => false, "errors" => $this->errors];
         }
 
         if ($this->userExists($username, $email)) {
+            error_log("[UserRegistration] User exists: $username / $email");
             return ["success" => false, "errors" => ["Benutzername oder Email ist bereits vergeben."]];
         }
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        error_log("[UserRegistration] Password hashed");
 
         $stmt = $this->con->prepare("INSERT INTO user (firstname, lastname, userName, email, userPassword, company)
         VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("ssssss", $firstname, $lastname, $username, $email, $hashedPassword, $company);
 
         if ($stmt->execute()) {
+            error_log("[UserRegistration] Registration successful for $username / $email");
             return ["success" => true];
         } else {
+            error_log("[UserRegistration] Registration failed: " . $stmt->error);
             return ["success" => false, "errors" => ["Fehler bei der Registrierung."]];
         }
     }
@@ -74,7 +81,9 @@ class UserRegistration {
         $stmt->bind_param("ss", $username, $email);
         $stmt->execute();
         $stmt->store_result(); 
-        return $stmt->num_rows > 0;
+        $exists = $stmt->num_rows > 0;
+        error_log("[UserRegistration] userExists check: $username / $email => " . ($exists ? 'true' : 'false'));
+        return $exists;
     }
     }
 ?>

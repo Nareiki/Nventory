@@ -56,58 +56,108 @@ for ($i = 6; $i >= 0; $i--) {
 ?>
 <!DOCTYPE html>
 <html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <title>Nventory · Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="CSS/layout.css">   
-  <link rel="stylesheet" href="CSS/dashboard.css">
-</head>
-<body>
-<!-- Header mit Logo, führt zur Startseite -->
-<header class="topbar"><a href="index.php"><img src="pictures/logoTest_transparent.png" alt="Home"></a></header>
 
-<div class="wrapper">
-  <?php 
+<head>
+    <meta charset="UTF-8">
+    <title>Nventory · Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="CSS/layout.css">
+    <link rel="stylesheet" href="CSS/dashboard.css">
+</head>
+
+<body>
+    <!-- Header mit Logo, führt zur Startseite -->
+    <header class="topbar"><a href="index.php"><img src="pictures/logoTest_transparent.png" alt="Home"></a></header>
+
+    <div class="wrapper">
+        <?php 
     $current = 'dashboard'; // Aktuelle Seite
-    include 'includes/sidebar.php'; ?>   <!--Sidebar-->
-  <main class="content">
-    <h1>Dashboard</h1>
-    <section class="cards">
-      <div class="card"><h2>Produkte gesamt</h2><p><?= $totalProducts ?></p></div>
-      <div class="card"><h2>Summe Stückzahlen</h2><p><?= $totalQuantity ?></p></div>
-      <div class="card"><h2>Low‑Stock Artikel</h2><p><?= $lowCnt ?></p></div>
-      <div class="card"><h2>Inventarwert (€)</h2><p><?= number_format($inventoryValue,2,',','.') ?></p></div>
-    </section>
-    <section class="card full">
-      <h2>Artikel mit geringem Bestand (≤ <?= $threshold ?>)</h2>
-      <?php if(!$lowCnt): ?><p class="muted">Keine kritischen Bestände.</p><?php else: ?><div class="list">
-        <?php foreach($lowItems as $it): ?>
-          <div class="list-item"><span>#<?= $it['Artikelnummer'] ?> – <?= htmlspecialchars($it['Produktname']) ?></span><strong><?= $it['Menge'] ?></strong></div>
-        <?php endforeach; ?></div><?php endif; ?>
-    </section>
-    <section class="card full">
-      <h2>Top 5 Bestseller (30 Tage)</h2>
-      <?php if(!$topItems): ?><p class="muted">Noch keine Verkäufe.</p><?php else: ?><div class="list">
-        <?php foreach($topItems as $t): ?>
-          <div class="list-item"><span>#<?= $t['Artikelnummer'] ?> – <?= htmlspecialchars($t['Produktname']) ?></span><strong><?= $t['sold'] ?></strong></div>
-        <?php endforeach; ?></div><?php endif; ?>
-    </section>
-    <section class="card full">
-      <h2>Verkäufe letzte 7 Tage</h2><canvas id="salesChart"></canvas>
-    </section>
-  </main>
-</div>
-<!-- <script src="JAVASCRIPT/authentificationCheck.js"> -->
-  <script>
-  document.addEventListener('DOMContentLoaded',()=>{
-    new Chart(document.getElementById('salesChart'),{
-      type:'bar',
-      data:{labels:<?=json_encode($labels)?>,datasets:[{data:<?=json_encode($values)?>}]},
-      options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#333'},ticks:{color:'#ccc'}},x:{grid:{display:false},ticks:{color:'#ccc'}}}}
+    include 'includes/sidebar.php'; ?>
+        <!--Sidebar-->
+        <main class="content">
+            <h1>Dashboard</h1>
+            <section class="cards">
+                <div class="card">
+                    <h2>Produkte gesamt</h2>
+                    <p><?= $totalProducts ?></p>
+                </div>
+                <div class="card">
+                    <h2>Summe Stückzahlen</h2>
+                    <p><?= $totalQuantity ?></p>
+                </div>
+                <div class="card">
+                    <h2>Low‑Stock Artikel</h2>
+                    <p><?= $lowCnt ?></p>
+                </div>
+                <div class="card">
+                    <h2>Inventarwert (€)</h2>
+                    <p><?= number_format($inventoryValue,2,',','.') ?></p>
+                </div>
+            </section>
+            <section class="card full">
+                <h2>Artikel mit geringem Bestand (≤ <?= $threshold ?>)</h2>
+                <?php if(!$lowCnt): ?><p class="muted">Keine kritischen Bestände.</p><?php else: ?><div class="list">
+                    <?php foreach($lowItems as $it): ?>
+                    <div class="list-item"><span>#<?= $it['Artikelnummer'] ?> –
+                            <?= htmlspecialchars($it['Produktname']) ?></span><strong><?= $it['Menge'] ?></strong></div>
+                    <?php endforeach; ?>
+                </div><?php endif; ?>
+            </section>
+            <section class="card full">
+                <h2>Top 5 Bestseller (30 Tage)</h2>
+                <?php if(!$topItems): ?><p class="muted">Noch keine Verkäufe.</p><?php else: ?><div class="list">
+                    <?php foreach($topItems as $t): ?>
+                    <div class="list-item"><span>#<?= $t['Artikelnummer'] ?> –
+                            <?= htmlspecialchars($t['Produktname']) ?></span><strong><?= $t['sold'] ?></strong></div>
+                    <?php endforeach; ?>
+                </div><?php endif; ?>
+            </section>
+            <section class="card full">
+                <h2>Verkäufe letzte 7 Tage</h2><canvas id="salesChart"></canvas>
+            </section>
+        </main>
+    </div>
+    <script src="JAVASCRIPT/authentificationCheck.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        new Chart(document.getElementById('salesChart'), {
+            type: 'bar',
+            data: {
+                labels: <?=json_encode($labels)?>,
+                datasets: [{
+                    data: <?=json_encode($values)?>
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#333'
+                        },
+                        ticks: {
+                            color: '#ccc'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#ccc'
+                        }
+                    }
+                }
+            }
+        });
     });
-  });
-</script>
+    </script>
 </body>
+
 </html>

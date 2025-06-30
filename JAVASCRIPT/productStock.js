@@ -67,13 +67,22 @@ editButtons.forEach(button => {
     button.addEventListener('click', function (e) {
         e.preventDefault();
         const row = this.closest('tr');
-
-        // Daten aus der Zeile abrufen
-        document.getElementById('artikelnummer').value = row.dataset.artikelnr;
-        document.getElementById('produktname').value = row.dataset.name;
-        document.getElementById('information').value = row.dataset.info;
-        document.getElementById('preis').value = row.dataset.preis.replace(',', '.');
-
+        // Defensive: check if dataset properties exist and log for debugging
+        const artikelnummer = row.dataset.artikelnr || row.querySelector('td:nth-child(2)')?.textContent.trim() || '';
+        const produktname = row.dataset.name || row.querySelector('td:nth-child(3)')?.textContent.trim() || '';
+        const information = row.dataset.info || row.querySelector('td:nth-child(4)')?.textContent.trim() || '';
+        const menge = row.dataset.menge || row.querySelector('td:nth-child(5)')?.textContent.trim() || '';
+        let preis = row.dataset.preis || row.querySelector('td.price')?.textContent.trim() || '';
+        if (preis) {
+            preis = preis.replace('€', '').replace(',', '.').trim();
+        }
+        document.getElementById('artikelnummer').value = artikelnummer;
+        document.getElementById('produktname').value = produktname;
+        document.getElementById('information').value = information;
+        if (document.getElementById('menge')) {
+            document.getElementById('menge').value = menge;
+        }
+        document.getElementById('preis').value = preis;
         // Modal öffnen
         modal.style.display = 'block';
     });
@@ -99,25 +108,26 @@ window.addEventListener('click', function (event) {
 // Formulardaten senden
 form.addEventListener('submit', function (e) {
     e.preventDefault();
-
     // Hier den AJAX-Code einfügen, um die Daten zu aktualisieren
     const formData = new FormData(this);
-
     // Als Beispiel: Ausgabe der Daten in der Konsole
     console.log('Daten speichern:', Object.fromEntries(formData));
     console.log('Artikelnummer:', formData.get('artikelnummer'));
-    // Hier würde normalerweise ein AJAX-Request erfolgen
+    // Prepare data for PUT request
+    const payload = {
+        articleName: formData.get('produktname'),
+        articleInformation: formData.get('information'),
+        articleAmount: formData.get('menge') ? parseInt(formData.get('menge'), 10) : undefined,
+        articlePrice: formData.get('preis') ? parseFloat(formData.get('preis').replace(',', '.')) : undefined
+    };
+    // Remove undefined fields
+    Object.keys(payload).forEach(key => payload[key] === undefined && delete payload[key]);
     fetch('http://localhost:3000/article/' + encodeURIComponent(formData.get('artikelnummer')), {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            articleName: formData.get('produktname'),
-            articleInformation: formData.get('information'),
-            articleAmount: parseInt(formData.get('menge'), 10),
-            articlePrice: parseFloat(formData.get('preis').replace(',', '.'))
-        })
+        body: JSON.stringify(payload)
     })
         .then(response => {
             if (!response.ok) throw new Error('Fehler beim Speichern!');
@@ -131,12 +141,8 @@ form.addEventListener('submit', function (e) {
         .catch(err => {
             alert(err.message);
         });
-
     // Modal schließen
     modal.style.display = 'none';
-
-    // Für Testzwecke: Seite neu laden
-    // location.reload();
 });
 
 // Produkt löschen

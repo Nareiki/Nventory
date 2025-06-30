@@ -33,6 +33,10 @@ if ($sort==='menge') {
 
 $sql = "SELECT * FROM Artikel ORDER BY $orderBy";
 $result = $conn->query($sql);
+
+// Ensure $artikelListe and $apiError are defined
+$artikelListe = isset($artikelListe) ? $artikelListe : [];
+$apiError = isset($apiError) ? $apiError : null;
 ?>
 
 <!DOCTYPE html>
@@ -106,43 +110,31 @@ $result = $conn->query($sql);
             </thead>
             <tbody>
                 <?php
-            if ($apiError) {
-                echo "<tr><td colspan='7' class='no-data'>" . htmlspecialchars($apiError) . "</td></tr>";
-            } elseif (!empty($artikelListe)) {
-                foreach ($artikelListe as $row) {
-                    $artikelnummer = $row["articleID"];
-                    $qrCodeFileName = "qrcodes/qrcode-$artikelnummer.png";
-                    echo '<tr data-artikelnr="' . htmlspecialchars($artikelnummer) . '" '
-                        . 'data-name="' . htmlspecialchars($row["articleName"]) . '" '
-                        . 'data-info="' . htmlspecialchars($row["articleInformation"]) . '" '
-                        . 'data-menge="' . htmlspecialchars($row["articleAmount"]) . '" '
-                        . 'data-preis="' . htmlspecialchars($row["articlePrice"]) . '">';
-
-                    echo '<td class="qr-code-cell">';
-                    if (file_exists($qrCodeFileName)) {
-                        echo '<img src="' . htmlspecialchars($qrCodeFileName) . '" alt="QR-Code">';
-                    } else {
-                        echo '/';
+                if ($apiError) {
+                    echo "<tr><td colspan='8' class='no-data'>" . htmlspecialchars($apiError) . "</td></tr>";
+                } elseif ($result && $result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $artikelnummer = $row["Artikelnummer"];
+                        echo "<tr>";
+                        // QR code cell placeholder (implement if needed)
+                        echo "<td>/</td>";
+                        echo "<td>" . htmlspecialchars($artikelnummer) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["Produktname"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["Information"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["Menge"]) . "</td>";
+                        echo "<td class='price'>" . number_format($row["Kaufpreis"], 2, ',', '.') . " €</td>";
+                        echo "<td>
+                                <a href='productStats.php?artikelnummer=" . urlencode($artikelnummer) . "'>
+                                    <img src='pictures/icons/chart-simple-solid.svg' alt='Statistik anzeigen' style='width:24px; height:24px;'>
+                                </a>
+                            </td>";
+                        echo "<td><a href='#' class='edit-product'>&#128221;</a></td>";
+                        echo "</tr>";
                     }
-                    echo '</td>';
-
-                    echo "<td>" . htmlspecialchars($row["Artikelnummer"]) . "</td>";
-                    echo "<td>" . htmlspecialchars($row["Produktname"]) . "</td>";
-                    echo "<td>" . htmlspecialchars($row["Information"]) . "</td>";
-                    echo "<td>" . htmlspecialchars($row["Menge"]) . "</td>";
-                    echo "<td class='price'>" . number_format($row["Kaufpreis"], 2, ',', '.') . " €</td>";
-                    echo "<td>
-                            <a href='productStats.php?artikelnummer=" . urlencode($artikelnummer) . "'>
-                                <img src='pictures/icons/chart-simple-solid.svg' alt='Statistik anzeigen' style='width:24px; height:24px;'>
-                            </a>
-                        </td>";
-                    echo "<td><a href='#' class='edit-product'>&#128221;</a></td>";
-                    echo "</tr>";
+                } else {
+                    echo "<tr><td colspan='8' class='no-data'>Keine Artikel gefunden</td></tr>";
                 }
-            } else {
-                echo "<tr><td colspan='7' class='no-data'>Keine Artikel gefunden</td></tr>";
-            }
-            ?>
+                ?>
             </tbody>
         </table>
     </div>

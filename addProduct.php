@@ -52,49 +52,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ]
         ];
 
-        $ch = curl_init('http://localhost:3000/article'); // Adjust URL if needed
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($apiData));
+        // $ch = curl_init('http://localhost:3000/article'); // Adjust URL if needed
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch, CURLOPT_POST, true);
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        // curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($apiData));
 
-        $apiResponse = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        // $apiResponse = curl_exec($ch);
+        // $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        if ($apiResponse === false) {
-            $errors[] = "API Fehler: " . curl_error($ch);
-        } elseif ($httpCode >= 200 && $httpCode < 300) {
-            $success = "Produkt erfolgreich angelegt!";
-            $responseData = json_decode($apiResponse, true);
-            $lastId = $responseData['articleID'] ?? null;
-            $showQRCode = true;
-        } else {
-            $errors[] = "API Fehler: " . $apiResponse;
-        }
-
-        curl_close($ch);
-        // try {
-        //     $conn = getDBConnection();
-
-        //     $stmt = $conn->prepare("INSERT INTO Artikel (Produktname, Information, Menge, Kaufpreis) VALUES (?, ?, ?, ?)");
-        //     $stmt->bind_param("ssid", $produktname, $information, $menge, $kaufpreis);
-
-        //     if ($stmt->execute()) {
-        //         $success = "Produkt erfolgreich angelegt!";
-        //         // Artikelnummer für QR-Code abrufen, aber nicht anzeigen
-        //         $lastId = $conn->insert_id;
-
-        //         // QR-Code-Generierung auslösen
-        //         $showQRCode = true;
-        //     } else {
-        //         $errors[] = "Fehler beim Speichern: " . $stmt->error;
-        //     }
-
-        //     $stmt->close();
-        //     $conn->close();
-        // } catch (Exception $e) {
-        //     $errors[] = "Datenbankfehler: " . $e->getMessage();
+        // if ($apiResponse === false) {
+        //     $errors[] = "API Fehler: " . curl_error($ch);
+        // } elseif ($httpCode >= 200 && $httpCode < 300) {
+        //     $success = "Produkt erfolgreich angelegt!";
+        //     $responseData = json_decode($apiResponse, true);
+        //     $lastId = $responseData['articleID'] ?? null;
+        //     $showQRCode = true;
+        // } else {
+        //     $errors[] = "API Fehler: " . $apiResponse;
         // }
+
+        // curl_close($ch);
+        try {
+            $conn = getDBConnection();
+
+            $stmt = $conn->prepare("INSERT INTO Artikel (Produktname, Information, Menge, Kaufpreis) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("ssid", $produktname, $information, $menge, $kaufpreis);
+
+            if ($stmt->execute()) {
+                $success = "Produkt erfolgreich angelegt!";
+                // Artikelnummer für QR-Code abrufen, aber nicht anzeigen
+                $lastId = $conn->insert_id;
+
+                // QR-Code-Generierung auslösen
+                $showQRCode = true;
+            } else {
+                $errors[] = "Fehler beim Speichern: " . $stmt->error;
+            }
+
+            $stmt->close();
+            $conn->close();
+        } catch (Exception $e) {
+            $errors[] = "Datenbankfehler: " . $e->getMessage();
+        }
     }
 }
 ?>

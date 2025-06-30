@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 
 $artNr            = isset($_POST['artikelnummer'])       ? (int)$_POST['artikelnummer']       : 0;
 $transactionAmount = isset($_POST['transactionAmount'])  ? (int)$_POST['transactionAmount']   : 0;
-$transactionPrice = isset($_POST['transactionPrice'])  ? (int)$_POST['transactionPrice']   : 0;
+$transactionPrice = isset($_POST['transactionPrice'])  ? (float)$_POST['transactionPrice']   : 0;
 $transactionType   = isset($_POST['transactionType'])    ? $_POST['transactionType']          : '';
 
 if ($artNr <= 0 || $transactionAmount <= 0 || !in_array($transactionType, ['in', 'out'])) {
@@ -69,7 +69,7 @@ try {
     echo json_encode(['success'=>true, 'mengeNeu'=>$mengeNeu]);
 
 } catch (Exception $e) {
-    if ($db->in_transaction) $db->rollback();
+    if (isset($db)) $db->rollback();
     http_response_code(500);
     echo json_encode(['success'=>false, 'msg'=>$e->getMessage()]);
 }
