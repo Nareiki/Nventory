@@ -1,5 +1,7 @@
 <?php
-// require_once __DIR__ . '/connection.php';
+include("HTML/header.html");
+
+require_once 'connection.php';
 
 // Verarbeitung des Formulars
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -95,107 +97,110 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // }
     }
 }
-
-// 2) Template-Steuerung
-$pageTitle = 'Produkt hinzufügen';
-$pageStyles = ['/CSS/addProduct.css'];
-
-ob_start();
 ?>
 
-<!-- Reines HTML -->
-<div class="container">
-    <div class="form-container">
-        <h1>Neuprodukt anlegen</h1>
-        <p class="subtitle">bitte alle Pflichtfelder ausfüllen</p>
+<!DOCTYPE html>
+<html lang="en">
 
-        <?php if (isset($errors) && !empty($errors)): ?>
-        <div class="error-message">
-            <?php foreach ($errors as $error): ?>
-            <p><?php echo htmlspecialchars($error); ?></p>
-            <?php endforeach; ?>
-        </div>
-        <?php endif; ?>
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="CSS/addProduct.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
 
-        <?php if (isset($success)): ?>
-        <div class="success-message">
-            <p><?php echo htmlspecialchars($success); ?></p>
-        </div>
-        <?php endif; ?>
+<body>
 
-        <?php if (isset($showQRCode) && $showQRCode): ?>
-        <!-- Erfolgsanzeige mit QR-Code -->
-        <div class="qr-code-container">
-            <div id="qrcode" class="qr-code"></div>
-            <button id="downloadBtn" class="download-btn" onclick="downloadQRCode()">
-                <img src="pictures/icons/download.svg" height="30px" alt="Download">
-            </button>
-        </div>
+    <div class="container">
+        <div class="form-container">
+            <h1>Neuprodukt anlegen</h1>
+            <p class="subtitle">bitte alle Pflichtfelder ausfüllen</p>
 
-        <div class="form-actions">
-            <button type="button" onclick="location.href='<?php echo $_SERVER['PHP_SELF']; ?>'" class="submit-btn">Neues
-                Produkt anlegen</button>
-        </div>
+            <?php if (isset($errors) && !empty($errors)): ?>
+            <div class="error-message">
+                <?php foreach ($errors as $error): ?>
+                <p><?php echo htmlspecialchars($error); ?></p>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
 
-        <script>
-        // QR-Code automatisch generieren
-        window.onload = function() {
-            var qrcode = new QRCode(document.getElementById("qrcode"), {
-                text: "<?php echo $lastId; ?>",
-                width: 128,
-                height: 128
-            });
-            document.getElementById("downloadBtn").style.display = "block";
-        };
+            <?php if (isset($success)): ?>
+            <div class="success-message">
+                <p><?php echo htmlspecialchars($success); ?></p>
+            </div>
+            <?php endif; ?>
 
-        function downloadQRCode() {
-            var canvas = document.querySelector("#qrcode canvas");
-            if (canvas) {
-                var link = document.createElement('a');
-                link.download = 'QRCode-<?php echo $lastId; ?>.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
+            <?php if (isset($showQRCode) && $showQRCode): ?>
+            <!-- Erfolgsanzeige mit QR-Code -->
+            <div class="qr-code-container">
+                <div id="qrcode" class="qr-code"></div>
+                <button id="downloadBtn" class="download-btn" onclick="downloadQRCode()">
+                    <img src="pictures/icons/download.svg" height="30px" alt="Download">
+                </button>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" onclick="location.href='<?php echo $_SERVER['PHP_SELF']; ?>'"
+                    class="submit-btn">Neues
+                    Produkt anlegen</button>
+            </div>
+
+            <script>
+            // QR-Code automatisch generieren
+            window.onload = function() {
+                var qrcode = new QRCode(document.getElementById("qrcode"), {
+                    text: "<?php echo $lastId; ?>",
+                    width: 128,
+                    height: 128
+                });
+                document.getElementById("downloadBtn").style.display = "block";
+            };
+
+            function downloadQRCode() {
+                var canvas = document.querySelector("#qrcode canvas");
+                if (canvas) {
+                    var link = document.createElement('a');
+                    link.download = 'QRCode-<?php echo $lastId; ?>.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                }
             }
-        }
-        </script>
-        <?php else: ?>
-        <!-- Formular zur Produkterstellung -->
-        <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-            <div class="form-group">
-                <label for="productName">Produktname</label>
-                <input type="text" id="productName" name="productName" placeholder="" required
-                    value="<?php echo isset($produktname) ? htmlspecialchars($produktname) : ''; ?>">
-            </div>
-            <div class="form-group">
-                <label for="information">Information (optional)</label>
-                <input type="text" id="information" name="information" placeholder=""
-                    value="<?php echo isset($information) ? htmlspecialchars($information) : ''; ?>">
-            </div>
-            <div class="form-group">
-                <label for="amount">Menge</label>
-                <input type="number" id="amount" name="amount" min="0" placeholder="" required
-                    value="<?php echo isset($menge) ? $menge : ''; ?>">
-            </div>
-            <div class="form-group">
-                <label for="price">Kaufpreis</label>
-                <input type="number" id="price" name="price" min="0" step="0.01" placeholder="" required
-                    value="<?php echo isset($kaufpreis) ? $kaufpreis : ''; ?>">
-            </div>
+            </script>
+            <?php else: ?>
+            <!-- Formular zur Produkterstellung -->
+            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <div class="form-group">
+                    <label for="productName">Produktname</label>
+                    <input type="text" id="productName" name="productName" placeholder="" required
+                        value="<?php echo isset($produktname) ? htmlspecialchars($produktname) : ''; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="information">Information (optional)</label>
+                    <input type="text" id="information" name="information" placeholder=""
+                        value="<?php echo isset($information) ? htmlspecialchars($information) : ''; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="amount">Menge</label>
+                    <input type="number" id="amount" name="amount" min="0" placeholder="" required
+                        value="<?php echo isset($menge) ? $menge : ''; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="price">Kaufpreis</label>
+                    <input type="number" id="price" name="price" min="0" step="0.01" placeholder="" required
+                        value="<?php echo isset($kaufpreis) ? $kaufpreis : ''; ?>">
+                </div>
 
-            <button type="submit" class="submit-btn">Neuprodukt anlegen</button>
-        </form>
-        <?php endif; ?>
+                <button type="submit" class="submit-btn">Neuprodukt anlegen</button>
+            </form>
+            <?php endif; ?>
 
-        <div class="changeStock">
-            <p>Bereits angelegt? <a href="#"> Bestand anpassen</a></p>
         </div>
     </div>
-</div>
+    <!-- <script src="JAVASCRIPT/authentificationCheck.js"></script> -->
+</body>
 
-<!-- Scripts am Ende -->
-<script src="/JAVASCRIPT/addProduct.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</html>
 
 <?php
-$content = ob_get_clean();
-include __DIR__.'/layout.php';
+include("HTML/footer.html");
+?>

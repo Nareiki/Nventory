@@ -23,14 +23,13 @@ a:hover {
     color: #FBF5E5;
 }
 
-.headerItemRight{
+.headerItemRight {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     height: 100px;
-    margin-left: 10px;
-    margin-right: 50px;
-    filter: invert(1);
+    position: absolute;
+    right: 50px; 
 }
 
 .headerItemLeft{
@@ -52,4 +51,15 @@ a:hover {
     margin-left: 10px;
     margin-right: 10px;
     filter: invert(1);
+}
+
+#authButton {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    color: white;
+    background-color: #505050;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
 }

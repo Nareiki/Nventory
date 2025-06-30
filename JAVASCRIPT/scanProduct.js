@@ -9,6 +9,7 @@ function domReady(fn) {
     }
 }
 
+//Holt Artikel data per POST und füllt articleInfo
 function getData(decodeText) {
     let articleNumber = decodeText;
 
@@ -28,15 +29,74 @@ function getData(decodeText) {
 }
 
 domReady(function () {
+  let currentArticleNr = null;
+  const actionsDiv = document.getElementById('stockActions');
+  const qtyInput   = document.getElementById('stockQty');
+  const msgSpan    = document.getElementById('stockMsg');
+  const btnIn      = document.getElementById('btnIn');
+  const btnOut     = document.getElementById('btnOut');
 
-    // If found you qr code
-    function onScanSuccess(decodeText, decodeResult) {
-         getData(decodeText);
+// If found you qr code 
+function onScanSuccess(decodeText) {
+    currentArticleNr = decodeText;
+    getData(decodeText);
+    //graue Artikel Info Box einblenden:
+    const infoBox = document.getElementById('articleInfo');
+    infoBox.style.display = 'block';
+    
+    // Buttons anzeigen
+    const actionsDiv = document.getElementById('stockActions');
+    actionsDiv.style.display = 'block';
+    
+    msgSpan.textContent = '';
     }
 
-    let htmlscanner = new Html5QrcodeScanner(
-        "my-qr-reader",
-        { fps: 10, qrbos: 250 }
-    );
-    htmlscanner.render(onScanSuccess);
+const htmlscanner = new Html5QrcodeScanner(
+    "my-qr-reader",
+    { fps: 10, qrbox: 250 }
+);
+htmlscanner.render(onScanSuccess);
+
+  // Beestand wird upgedated mit Eingabe(delta) von User, sendet Ein-/Ausbuchungs-Delta an den Server
+    function updateStock(delta){
+        fetch('/updateStock.php', {
+            method:'POST',
+            headers:{'Content-Type':'application/x-www-form-urlencoded'},
+            body:`artikelnummer=${encodeURIComponent(currentArticleNr)}&delta=${delta}`
+        })
+        .then(r => r.json())
+        .then(json => {
+            if (json.success) {
+          msgSpan.textContent = `Neuer Bestand: ${json.mengeNeu}`;
+          getData(currentArticleNr);
+        } else {
+          alert(json.msg || 'Unbekannter Fehler');
+        }
+      })
+      .catch(err => alert('Serverfehler: ' + err));
+  }
+
+  // Button-Handler
+// ---------------------------------------------------------------------
+// Button-Handler  (diesen Teil ersetzen)
+// ---------------------------------------------------------------------
+btnIn.addEventListener('click', () => {
+  const n = parseInt(qtyInput.value, 10) || 1;      // positive Zahl
+  const delta = +Math.abs(n);                       // Einbuchen = +n
+
+  // Bestätigung anzeigen
+  if (confirm(`Möchten Sie den Bestand um +${delta} Stück erhöhen?`)) {
+    updateStock(delta);        // nur wenn OK
+  }
+});
+
+btnOut.addEventListener('click', () => {
+  const n = parseInt(qtyInput.value, 10) || 1;      // positive Zahl
+  const delta = -Math.abs(n);                       // Ausbuchen = -n
+
+  // Bestätigung anzeigen
+  if (confirm(`Möchten Sie den Bestand um ${delta} Stück verringern?`)) {
+    updateStock(delta);        // nur wenn OK
+  }
+});
 });

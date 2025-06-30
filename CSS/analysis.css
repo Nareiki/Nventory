@@ -1,0 +1,13 @@
+:root{
+  --bg-0:#181818;
+  --bg-1:#212121;
+  --txt:#e5e5e5;
+  --accent:#9c9c9c;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:"Inter",sans-serif;
+  margin:0;
+  padding:0;
+}

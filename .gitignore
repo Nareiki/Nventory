@@ -1,2 +1,5 @@
-node_modules
-dist
+nventory-backend/node_modules/**
+nventory-backend/dist/**
+.DS_Store
+node_modules/
+dist/
