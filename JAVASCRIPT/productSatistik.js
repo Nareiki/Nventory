@@ -1,18 +1,26 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    // Artikelnummer aus URL lesen, z. B. produktStatistik.html?artikelnummer=23
+    // Artikelnummer aus URL lesen, z. B. produktStatistik.html?articleID=23
     const params = new URLSearchParams(window.location.search);
-    const artikelnummer = params.get("artikelnummer");
+    // Accept both 'articleID' and 'Artikelnummer' for compatibility
+    const articleID = params.get("articleID") || params.get("artikelnummer");
 
-    if (!artikelnummer) {
+    console.log("[productSatistik] articleID from URL:", articleID);
+
+    if (!articleID) {
         document.getElementById("produkt-info").textContent = "Keine Artikelnummer übergeben.";
         return;
     }
 
-    document.getElementById("produkt-info").textContent = `Statistik für Artikelnummer: ${artikelnummer}`;
+    document.getElementById("produkt-info").textContent = `Statistik für Artikelnummer: ${articleID}`;
 
     try {
-        const response = await fetch(`./api/getProductStats.php?artikelnummer=${artikelnummer}`);
+        // Call backend API endpoint directly (adjust URL as needed)
+        const apiUrl = `http://localhost:3000/article/stats/${encodeURIComponent(articleID)}`;
+        const response = await fetch(apiUrl);
         const json = await response.json();
+
+        console.log("[productSatistik] API request URL:", apiUrl);
+        console.log("[productSatistik] API response:", json);
 
         if (!json.success) throw new Error(json.error || "Fehler beim Abruf.");
 

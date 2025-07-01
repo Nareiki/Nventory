@@ -86,4 +86,14 @@ export class ArticleController {
         }
         return { success: true };
     }
+
+    @Get(':id')
+    async findOne(@Param('id') id: number) {
+        return this.articleService.findOne(id);
+    }
+
+    @Get('stats/:articleID')
+    async getProductStats(@Param('articleID') articleID: string) {
+        return this.articleService.getProductStats(articleID);
+    }
 }

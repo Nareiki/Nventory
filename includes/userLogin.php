@@ -1,14 +1,8 @@
 <?php
-require_once("../connection.php");
 
 class UserLogin {
-    private $con;
-
-    public function __construct() {
-        $this->con = getDBConnection();
-    }
-
-    public function authenticate(array $data): array {
+    // Login via backend API
+    public static function authenticate(array $data): array {
         $username = trim($data["username"] ?? '');
         $password = trim($data["password"] ?? '');
 
@@ -16,32 +10,65 @@ class UserLogin {
             return ["success" => false, "message" => "Benutzername und Passwort erforderlich."];
         }
 
-        $stmt = $this->con->prepare("SELECT userPassword, status, email FROM user WHERE userName = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows !== 1) {
-            return ["success" => false, "message" => "Benutzername existiert nicht."];
-        }
-
-        $user = $result->fetch_assoc();
-
-        if ((int)$user["status"] === 0) {
-            return ["success" => false, "message" => "Ihr Konto ist inaktiv. Bitte kontaktieren Sie den Administrator."];
-        }
-
-        if (!password_verify($password, $user["userPassword"])) {
-            return ["success" => false, "message" => "Benutzername oder Passwort ist falsch."];
-        }
-
-        return [
-            "success" => true,
-            "data" => [
-                "username" => $username,
-                "email" => $user["email"]
+        $apiUrl = 'http://localhost:3000/user/login';
+        $payload = json_encode([
+            'username' => $username,
+            'password' => $password
+        ]);
+        $options = [
+            'http' => [
+                'method'  => 'POST',
+                'header'  => "Content-Type: application/json\r\nAccept: application/json\r\n",
+                'content' => $payload,
+                'ignore_errors' => true
             ]
         ];
+        $context  = stream_context_create($options);
+        $response = @file_get_contents($apiUrl, false, $context);
+        if ($response === false) {
+            return ["success" => false, "message" => "Keine Verbindung zum Backend-Server."];
+        }
+        $result = json_decode($response, true);
+        if (!$result || !isset($result['token'])) {
+            return ["success" => false, "message" => $result['message'] ?? "Ungültige Antwort vom Backend."];
+        }
+        // Return token and user info for session management
+        return ["success" => true, "token" => $result['token'], "user" => $result['user'] ?? null];
+    }
+
+    // Registration via backend API
+    public static function register(array $data): array {
+        $username = trim($data["username"] ?? '');
+        $password = trim($data["password"] ?? '');
+        $email    = trim($data["email"] ?? '');
+
+        if (empty($username) || empty($password) || empty($email)) {
+            return ["success" => false, "message" => "Alle Felder sind erforderlich."];
+        }
+
+        $apiUrl = 'http://localhost:3000/user/register';
+        $payload = json_encode([
+            'username' => $username,
+            'password' => $password,
+            'email'    => $email
+        ]);
+        $options = [
+            'http' => [
+                'method'  => 'POST',
+                'header'  => "Content-Type: application/json\r\nAccept: application/json\r\n",
+                'content' => $payload,
+                'ignore_errors' => true
+            ]
+        ];
+        $context  = stream_context_create($options);
+        $response = @file_get_contents($apiUrl, false, $context);
+        if ($response === false) {
+            return ["success" => false, "message" => "Keine Verbindung zum Backend-Server."];
+        }
+        $result = json_decode($response, true);
+        if (!$result || !isset($result['success'])) {
+            return ["success" => false, "message" => $result['message'] ?? "Ungültige Antwort vom Backend."];
+        }
+        return $result;
     }
 }
-

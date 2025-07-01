@@ -1,44 +1,30 @@
 <?php
-include("HTML/header.html");
-require_once 'connection.php';
-
-// Verbindung zur Datenbank herstellen
-$conn = getDBConnection();
+include "HTML/header.html";
 
 // SortierLink - auf- bzw. absteigend
 $allowedSort = ['artikelnummer','menge', 'kaufpreis', 'produktname'];
-
-//Standardsortierung auf artikelnummer
 $sort = isset($_GET['sort']) && in_array($_GET['sort'], $allowedSort)
     ? $_GET['sort']
     : 'artikelnummer';
-
-//Standardsort ist DESC, kann aber hier aussuchen
-$dir = (isset($_GET['dir']) && strtolower($_GET['dir'])==='asc')
-    ? 'ASC'
-    : 'DESC';
-
-//wenn gerade ASC, dann beim nächsten Klick desc
+$dir = (isset($_GET['dir']) && strtolower($_GET['dir'])==='asc') ? 'ASC' : 'DESC';
 $toggleDir = $dir==='ASC' ? 'desc' : 'asc';
 
-if ($sort==='menge') {
-    $orderBy = "Menge $dir";
-} elseif ($sort==='kaufpreis') {
-    $orderBy = "Kaufpreis $dir";
-} elseif ($sort==='produktname') {
-    $orderBy = "produktname $dir";
+// Backend API call for articles
+$apiError = null;
+$artikelListe = [];
+$apiUrl = "http://localhost:3000/article?sort=$sort&dir=$dir";
+$response = @file_get_contents($apiUrl);
+if ($response === false) {
+    $apiError = 'Keine Verbindung zum Backend-Server. Bitte versuchen Sie es später erneut.';
 } else {
-    $orderBy = "Artikelnummer $dir";
+    $apiData = json_decode($response, true);
+    if (is_array($apiData) && count($apiData) > 0) {
+        $artikelListe = $apiData;
+    } else {
+        $apiError = 'Keine Artikeldaten verfügbar.';
+    }
 }
-
-$sql = "SELECT * FROM Artikel ORDER BY $orderBy";
-$result = $conn->query($sql);
-
-// Ensure $artikelListe and $apiError are defined
-$artikelListe = isset($artikelListe) ? $artikelListe : [];
-$apiError = isset($apiError) ? $apiError : null;
 ?>
-
 <!DOCTYPE html>
 <html lang="de">
 
@@ -112,17 +98,17 @@ $apiError = isset($apiError) ? $apiError : null;
                 <?php
                 if ($apiError) {
                     echo "<tr><td colspan='8' class='no-data'>" . htmlspecialchars($apiError) . "</td></tr>";
-                } elseif ($result && $result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        $artikelnummer = $row["Artikelnummer"];
+                } elseif (!empty($artikelListe)) {
+                    foreach ($artikelListe as $row) {
+                        $artikelnummer = $row["Artikelnummer"] ?? $row["articleID"] ?? '';
                         echo "<tr>";
                         // QR code cell placeholder (implement if needed)
                         echo "<td>/</td>";
                         echo "<td>" . htmlspecialchars($artikelnummer) . "</td>";
-                        echo "<td>" . htmlspecialchars($row["Produktname"]) . "</td>";
-                        echo "<td>" . htmlspecialchars($row["Information"]) . "</td>";
-                        echo "<td>" . htmlspecialchars($row["Menge"]) . "</td>";
-                        echo "<td class='price'>" . number_format($row["Kaufpreis"], 2, ',', '.') . " €</td>";
+                        echo "<td>" . htmlspecialchars($row["Produktname"] ?? $row["articleName"] ?? '') . "</td>";
+                        echo "<td>" . htmlspecialchars($row["Information"] ?? $row["articleInformation"] ?? '') . "</td>";
+                        echo "<td>" . htmlspecialchars($row["Menge"] ?? $row["articleAmount"] ?? '') . "</td>";
+                        echo "<td class='price'>" . number_format($row["Kaufpreis"] ?? $row["articlePrice"] ?? 0, 2, ',', '.') . " €</td>";
                         echo "<td>
                                 <a href='productStats.php?artikelnummer=" . urlencode($artikelnummer) . "'>
                                     <img src='pictures/icons/chart-simple-solid.svg' alt='Statistik anzeigen' style='width:24px; height:24px;'>
@@ -172,7 +158,7 @@ $apiError = isset($apiError) ? $apiError : null;
             </form>
         </div>
     </div>
-    <!--<script src="JAVASCRIPT/authentificationCheck.js"></script> -->
+    <script src="JAVASCRIPT/authentificationCheck.js"></script>
     <script src="JAVASCRIPT/productStock.js"></script>
 </body>
 

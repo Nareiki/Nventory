@@ -1,8 +1,6 @@
 <?php
 include("HTML/header.html");
 
-require_once 'connection.php';
-
 // Verarbeitung des Formulars
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Daten aus dem Formular holen
@@ -36,65 +34,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Kaufpreis darf nicht unter 0 sein";
     }
 
-    // Wenn keine Fehler, in Datenbank speichern
+    // Wenn keine Fehler, an Backend API senden
     if (empty($errors)) {
-         // Prepare data for API
         $apiData = [
             'articleName' => $produktname,
             'articleInformation' => $information,
             'articleAmount' => $menge,
             'articlePrice' => $kaufpreis,
             'shelf' => [
-                'shelfID' => 1, // Main shelf ID, adjust with more functionality if needed
+                'shelfID' => 1,
                 'warehouse' => [
-                    'warehouseID' => 1 // Standard warehouse ID, adjust with more functionality if needed
+                    'warehouseID' => 1
                 ]
             ]
         ];
-
-        // $ch = curl_init('http://localhost:3000/article'); // Adjust URL if needed
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_POST, true);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($apiData));
-
-        // $apiResponse = curl_exec($ch);
-        // $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        // if ($apiResponse === false) {
-        //     $errors[] = "API Fehler: " . curl_error($ch);
-        // } elseif ($httpCode >= 200 && $httpCode < 300) {
-        //     $success = "Produkt erfolgreich angelegt!";
-        //     $responseData = json_decode($apiResponse, true);
-        //     $lastId = $responseData['articleID'] ?? null;
-        //     $showQRCode = true;
-        // } else {
-        //     $errors[] = "API Fehler: " . $apiResponse;
-        // }
-
-        // curl_close($ch);
-        try {
-            $conn = getDBConnection();
-
-            $stmt = $conn->prepare("INSERT INTO Artikel (Produktname, Information, Menge, Kaufpreis) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("ssid", $produktname, $information, $menge, $kaufpreis);
-
-            if ($stmt->execute()) {
-                $success = "Produkt erfolgreich angelegt!";
-                // Artikelnummer für QR-Code abrufen, aber nicht anzeigen
-                $lastId = $conn->insert_id;
-
-                // QR-Code-Generierung auslösen
-                $showQRCode = true;
-            } else {
-                $errors[] = "Fehler beim Speichern: " . $stmt->error;
-            }
-
-            $stmt->close();
-            $conn->close();
-        } catch (Exception $e) {
-            $errors[] = "Datenbankfehler: " . $e->getMessage();
+        $ch = curl_init('http://localhost:3000/article');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($apiData));
+        $apiResponse = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($apiResponse === false) {
+            $errors[] = "API Fehler: " . curl_error($ch);
+        } elseif ($httpCode >= 200 && $httpCode < 300) {
+            $success = "Produkt erfolgreich angelegt!";
+            $responseData = json_decode($apiResponse, true);
+            $lastId = $responseData['articleID'] ?? null;
+            $showQRCode = true;
+        } else {
+            $errors[] = "API Fehler: " . $apiResponse;
         }
+        curl_close($ch);
     }
 }
 ?>
@@ -196,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </div>
     </div>
-    <!-- <script src="JAVASCRIPT/authentificationCheck.js"></script> -->
+    <script src="JAVASCRIPT/authentificationCheck.js"></script>
 </body>
 
 </html>

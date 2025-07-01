@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/entities/user.entity';
@@ -21,32 +21,48 @@ export class UserService {
     }
 
     async findByUsername(username: string): Promise<User | null> {
-        return this.userRepository.findOne({ where: { userName: username } });
+        return this.userRepository.findOne({ where: { username: username } });
     }
 
     async comparePassword(plain: string, hash: string): Promise<boolean> {
         return bcrypt.compare(plain, hash);
     }
 
-    async create(createUserDto: CreateUserDto): Promise<User> {
+    async create(createUserDto: CreateUserDto): Promise<{ success: boolean }> {
         // Validation
         if (!createUserDto.username || typeof createUserDto.username !== 'string' || createUserDto.username.length < 3) {
-            throw new Error('Username is required and must be at least 3 characters long');
+            throw new BadRequestException('Username is required and must be at least 3 characters long');
         }
         if (!createUserDto.password || typeof createUserDto.password !== 'string' || createUserDto.password.length < 6) {
-            throw new Error('Password is required and must be at least 6 characters long');
+            throw new BadRequestException('Password is required and must be at least 6 characters long');
         }
-        if (createUserDto.email && !/^\S+@\S+\.\S+$/.test(createUserDto.email)) {
-            throw new Error('Invalid email format');
+        if (createUserDto.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(createUserDto.email)) {
+            throw new BadRequestException('Invalid email format');
+        }
+        // Unique check
+        const existing = await this.userRepository.findOne({
+            where: [
+                { username: createUserDto.username },
+                { email: createUserDto.email }
+            ]
+        });
+        if (existing) {
+            throw new BadRequestException('Username or email already exists');
         }
         // Hash password
         const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
         const user = this.userRepository.create({
-            userName: createUserDto.username,
-            userPassword: hashedPassword,
-            warehouseID: (createUserDto as any).warehouseID ?? null // add warehouseID if present
+            username: createUserDto.username,
+            password: hashedPassword,
+            firstname: createUserDto.firstname,
+            lastname: createUserDto.lastname,
+            email: createUserDto.email,
+            company: createUserDto.company,
+            warehouseID: createUserDto.warehouseID,
+            status: createUserDto.status ?? true
         });
-        return this.userRepository.save(user);
+        await this.userRepository.save(user);
+        return { success: true };
     }
 
     async update(id: number, updateUserDto: UpdateUserDto): Promise<User | null> {
@@ -56,13 +72,13 @@ export class UserService {
             if (typeof updateUserDto.username !== 'string' || updateUserDto.username.length < 3) {
                 throw new Error('Username must be at least 3 characters long');
             }
-            user.userName = updateUserDto.username;
+            user.username = updateUserDto.username;
         }
         if (updateUserDto.password !== undefined) {
             if (typeof updateUserDto.password !== 'string' || updateUserDto.password.length < 6) {
                 throw new Error('Password must be at least 6 characters long');
             }
-            user.userPassword = await bcrypt.hash(updateUserDto.password, 10);
+            user.password = await bcrypt.hash(updateUserDto.password, 10);
         }
         if (updateUserDto.email !== undefined && updateUserDto.email !== null) {
             if (!/^\S+@\S+\.\S+$/.test(updateUserDto.email)) {

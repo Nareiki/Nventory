@@ -1,6 +1,6 @@
 async function ladeStatistiken() {
     try {
-        const res = await fetch("./api/getStats.php");
+        const res = await fetch("http://localhost:3000/article-transaction/statistics");
         const json = await res.json();
         if (!json.success) throw new Error(json.error || "Unbekannter Fehler");
 

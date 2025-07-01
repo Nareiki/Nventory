@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Article } from 'src/entities/article.entity';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { FindArticleDto } from './dto/find-article.dto';
 
 @Injectable()
 export class ArticleService {
-
     constructor(
         @InjectRepository(Article)
         private articleRepository: Repository<Article>,
+        private dataSource: DataSource
     ) { }
 
     findSpecific(dto: FindArticleDto): Promise<Article[]> {
@@ -85,5 +85,39 @@ export class ArticleService {
     async remove(id: number): Promise<boolean> {
         const result = await this.articleRepository.delete({ articleID: id });
         return !!result.affected && result.affected > 0;
+    }
+
+    async findOne(id: number) {
+        return this.articleRepository.findOne({ where: { articleID: id } });
+    }
+
+    async getProductStats(articleID: string) {
+        // Use a raw SQL query to match the product stats logic, using articleID
+        const result = await this.dataSource.query(`
+            SELECT 
+                at.articleID,
+                a.articleName AS Produktname,
+                ROUND(AVG(CASE WHEN at.transactionType = 'in' THEN at.transactionPrice ELSE NULL END), 2) AS DurchschnittlicherKaufpreis,
+                a.articleAmount AS Bestand,
+                ROUND(AVG(CASE WHEN at.transactionType = 'out' THEN at.transactionPrice ELSE NULL END), 2) AS DurchschnittlicherVerkaufspreis,
+                SUM(CASE 
+                    WHEN at.transactionType = 'out' AND at.transactionTimestamp >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                    THEN at.transactionPrice * at.transactionAmount 
+                    ELSE 0 
+                END) AS Gesamtumsatz,
+                SUM(CASE 
+                    WHEN at.transactionType = 'out' AND at.transactionTimestamp >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                    THEN at.transactionAmount 
+                    ELSE 0 
+                END) AS Verkaufsmenge
+            FROM articletransactions as at
+            LEFT JOIN article a ON at.articleID = a.articleID
+            WHERE at.articleID = ?
+            GROUP BY at.articleID, a.articleName, a.articleAmount
+        `, [articleID]);
+        if (!result?.[0]) {
+            return { success: false, error: 'Kein Produkt mit dieser Artikelnummer gefunden oder keine Daten vorhanden.' };
+        }
+        return { success: true, data: result[0] };
     }
 }

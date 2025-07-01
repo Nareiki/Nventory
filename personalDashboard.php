@@ -1,57 +1,28 @@
 <?php
-require_once 'connection.php';
-ini_set('display_errors',1);
-error_reporting(E_ALL);
+// require_once 'connection.php';
+// ini_set('display_errors',1);
+// error_reporting(E_ALL);
 
-$conn = getDBConnection();
 $threshold = 5;
+$errorMsg = null;
 
-//Kennzahlen
-$totalProducts  = $conn->query("SELECT COUNT(*) FROM Artikel")->fetch_row()[0];
-$totalQuantity  = $conn->query("SELECT IFNULL(SUM(Menge),0) FROM Artikel")->fetch_row()[0];
-$inventoryValue = $conn->query("SELECT IFNULL(SUM(Menge*Kaufpreis),0) FROM Artikel")->fetch_row()[0];
-
-//Low Stock Artikel
-$lowStmt = $conn->prepare("SELECT Artikelnummer, Produktname, Menge FROM Artikel WHERE Menge<=? ORDER BY Menge ASC, Produktname");
-$lowStmt->bind_param('i',$threshold);
-$lowStmt->execute();
-$lowItems = $lowStmt->get_result()->fetch_all(MYSQLI_ASSOC);
-$lowStmt->close();
-$lowCnt = count($lowItems);
-
-//Top‑5 Bestseller 30 Tage
-$topQ = "
-  SELECT A.Artikelnummer,
-         A.Produktname,
-         SUM(T.transactionAmount)          AS sold
-  FROM   ArticleTransactions T
-  JOIN   Artikel A ON A.Artikelnummer = T.articleID
-  WHERE  T.transactionType = 'out'                                 -- nur Verkäufe
-    AND  T.transactionTimestamp >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
-  GROUP  BY T.articleID
-  ORDER  BY sold DESC
-  LIMIT  5";
-$topItems = $conn->query($topQ)->fetch_all(MYSQLI_ASSOC);
-
-// Verkäufe letzte 7 Tage
-$salesSql = "
-  SELECT DATE(T.transactionTimestamp) AS d,
-         SUM(T.transactionAmount) AS s
-  FROM   ArticleTransactions T
-  WHERE  T.transactionType = 'out'
-    AND  T.transactionTimestamp >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
-  GROUP  BY d";
-$raw = $conn->query($salesSql);
-
-$tmp = [];
-while ($r = $raw->fetch_assoc()) {
-    $tmp[$r['d']] = $r['s'];   // am jeweiligen Tag verkaufte Stückzahl
-}
-$labels = $values = [];
-for ($i = 6; $i >= 0; $i--) {
-    $d          = date('Y-m-d', strtotime("-$i day"));
-    $labels[]   = date('d.m', strtotime($d));
-    $values[]   = $tmp[$d] ?? 0;
+// 1. Kennzahlen
+$statsUrl = 'http://localhost:3000/article-transaction/dashboard-stats?threshold=' . $threshold;
+$statsResponse = @file_get_contents($statsUrl);
+$stats = $statsResponse ? json_decode($statsResponse, true) : null;
+if (!$stats || !is_array($stats)) {
+    $errorMsg = 'Keine Verbindung zum Backend-Server oder keine Dashboarddaten verfügbar.';
+    $totalProducts = $totalQuantity = $inventoryValue = $lowCnt = 0;
+    $lowItems = $topItems = $labels = $values = [];
+} else {
+    $totalProducts = $stats['totalProducts'] ?? 0;
+    $totalQuantity = $stats['totalQuantity'] ?? 0;
+    $inventoryValue = $stats['inventoryValue'] ?? 0;
+    $lowItems = $stats['lowItems'] ?? [];
+    $lowCnt = count($lowItems);
+    $topItems = $stats['topItems'] ?? [];
+    $labels = $stats['salesLabels'] ?? [];
+    $values = $stats['salesValues'] ?? [];
 }
 ?>
 <!DOCTYPE html>
@@ -77,6 +48,12 @@ for ($i = 6; $i >= 0; $i--) {
         <!--Sidebar-->
         <main class="content">
             <h1>Dashboard</h1>
+            <?php if ($errorMsg): ?>
+            <section class="card full"
+                style="background:var(--bg-1); color:var(--accent); padding:1.5rem; border-radius:8px; margin-bottom:1.5rem; text-align:center; font-size:1.1rem;">
+                <span class="muted"><?= htmlspecialchars($errorMsg) ?></span>
+            </section>
+            <?php endif; ?>
             <section class="cards">
                 <div class="card">
                     <h2>Produkte gesamt</h2>
@@ -99,8 +76,9 @@ for ($i = 6; $i >= 0; $i--) {
                 <h2>Artikel mit geringem Bestand (≤ <?= $threshold ?>)</h2>
                 <?php if(!$lowCnt): ?><p class="muted">Keine kritischen Bestände.</p><?php else: ?><div class="list">
                     <?php foreach($lowItems as $it): ?>
-                    <div class="list-item"><span>#<?= $it['Artikelnummer'] ?> –
-                            <?= htmlspecialchars($it['Produktname']) ?></span><strong><?= $it['Menge'] ?></strong></div>
+                    <div class="list-item"><span>#<?= $it['Artikelnummer'] ?? $it['a_articleID'] ?> –
+                            <?= htmlspecialchars($it['Produktname'] ?? $it['a_articleName']) ?></span><strong><?= $it['Menge'] ?? $it['articleAmount'] ?></strong>
+                    </div>
                     <?php endforeach; ?>
                 </div><?php endif; ?>
             </section>
@@ -108,8 +86,9 @@ for ($i = 6; $i >= 0; $i--) {
                 <h2>Top 5 Bestseller (30 Tage)</h2>
                 <?php if(!$topItems): ?><p class="muted">Noch keine Verkäufe.</p><?php else: ?><div class="list">
                     <?php foreach($topItems as $t): ?>
-                    <div class="list-item"><span>#<?= $t['Artikelnummer'] ?> –
-                            <?= htmlspecialchars($t['Produktname']) ?></span><strong><?= $t['sold'] ?></strong></div>
+                    <div class="list-item"><span>#<?= $t['Artikelnummer'] ?? $t['articleID'] ?> –
+                            <?= htmlspecialchars($t['Produktname'] ?? $t['articleName']) ?></span><strong><?= $t['sold'] ?></strong>
+                    </div>
                     <?php endforeach; ?>
                 </div><?php endif; ?>
             </section>
@@ -121,6 +100,9 @@ for ($i = 6; $i >= 0; $i--) {
     <script src="JAVASCRIPT/authentificationCheck.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Debug output for chart data
+        console.log('Chart labels:', <?=json_encode($labels)?>);
+        console.log('Chart values:', <?=json_encode($values)?>);
         new Chart(document.getElementById('salesChart'), {
             type: 'bar',
             data: {

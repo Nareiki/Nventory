@@ -2,7 +2,15 @@ document.getElementById("register-form").addEventListener("submit", async functi
     e.preventDefault();
 
     const formData = new FormData(this);
-    console.log("FormData:", Array.from(formData.entries()));
+    const payload = {
+        firstname: formData.get('firstname'),
+        lastname: formData.get('lastname'),
+        company: formData.get('company'),
+        username: formData.get('username'),
+        password: formData.get('password'),
+        email: formData.get('email'),
+        warehouseID: 1 // static warehouse ID
+    };
     let output = document.querySelector(".error-output");
     if (!output) {
         output = document.createElement('div');
@@ -11,9 +19,10 @@ document.getElementById("register-form").addEventListener("submit", async functi
     }
     output.innerHTML = '';
     try {
-        const response = await fetch("api/register.php", {
+        const response = await fetch("http://localhost:3000/user/register", {
             method: "POST",
-            body: formData
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
         });
         let data;
         try {
@@ -31,7 +40,7 @@ document.getElementById("register-form").addEventListener("submit", async functi
                 `<p style="color:red;">${error}</p>`
             ).join('');
         } else {
-            output.innerHTML = '<p style="color:red;">Unbekannter Fehler.</p>';
+            output.innerHTML = `<p style="color:red;">${data.message || 'Unbekannter Fehler.'}</p>`;
         }
     } catch (err) {
         console.error("Fetch error", err);

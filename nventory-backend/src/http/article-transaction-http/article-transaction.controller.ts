@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Post, Body } from '@nestjs/common';
+import { Controller, Get, Query, Post, Body, Param } from '@nestjs/common';
 import { ArticleTransactionService } from 'src/core/article-transaction/article-transaction.service';
 import { SalesPerDayDto } from 'src/core/article-transaction/dto/sales-per-day.dto';
 import { ArticleWithSoldDto } from 'src/core/article-transaction/dto/article-with-sold.dto';
@@ -40,5 +40,35 @@ export class ArticleTransactionController {
             dto.transactionTimestamp = new Date();
         }
         return this.articleTransactionService.createTransaction(dto);
+    }
+
+    @Post('transaction-stock')
+    async createTransactionAndUpdateStock(@Body() dto: CreateTransactionDto) {
+        try {
+            return await this.articleTransactionService.createTransactionAndUpdateStock(dto);
+        } catch (e) {
+            return { success: false, msg: e.message };
+        }
+    }
+
+    // Dashboard statistics for frontend
+    @Get('dashboard-stats')
+    async getDashboardStats(@Query('threshold') threshold: number = 5) {
+        return this.articleTransactionService.dashboardStats(threshold);
+    }
+
+    @Get('statistics')
+    async getStatistics() {
+        const data = await this.articleTransactionService.getStatistics();
+        return { success: true, data };
+    }
+
+    @Post('update/:id')
+    async updateTransaction(@Body() updateData: Partial<CreateTransactionDto>, @Query('id') id: string) {
+        const updated = await this.articleTransactionService.updateTransaction(Number(id), updateData);
+        if (!updated) {
+            return { success: false, message: 'Transaction not found' };
+        }
+        return { success: true, data: updated };
     }
 }

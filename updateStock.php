@@ -1,5 +1,4 @@
 <?php
-require_once 'connection.php';
 header('Content-Type: application/json');
 
 $artNr            = isset($_POST['artikelnummer'])       ? (int)$_POST['artikelnummer']       : 0;
@@ -13,63 +12,31 @@ if ($artNr <= 0 || $transactionAmount <= 0 || !in_array($transactionType, ['in',
     exit;
 }
 
-try {
-    $db = getDBConnection();
-    $db->begin_transaction();
+// API-Request an das Backend
+$apiUrl = 'http://localhost:3000/article/' . urlencode($artNr);
+$payload = json_encode([
+    'transactionAmount' => $transactionAmount,
+    'transactionPrice' => $transactionPrice,
+    'transactionType' => $transactionType
+]);
 
-    // aktuellen Bestand holen
-    $stmt = $db->prepare(
-        "SELECT Menge
-           FROM Artikel
-          WHERE Artikelnummer = ?");
-    $stmt->bind_param("i", $artNr);
-    $stmt->execute();
-    $stmt->bind_result($mengeAlt);
-    if (!$stmt->fetch()) {
-        throw new Exception('Artikel nicht gefunden');
-    }
-    $stmt->close();
+$options = [
+    'http' => [
+        'method'  => 'PUT',
+        'header'  => "Content-Type: application/json\r\nAccept: application/json\r\n",
+        'content' => $payload,
+        'ignore_errors' => true
+    ]
+];
+$context  = stream_context_create($options);
+$response = @file_get_contents($apiUrl, false, $context);
 
-    // neuen Bestand berechnen
-    if ($transactionType === 'in') {
-        $mengeNeu = $mengeAlt + $transactionAmount;
-    } else {
-        $mengeNeu = $mengeAlt - $transactionAmount;
-        if ($mengeNeu < 0) {
-            throw new Exception("Ausbuchung größer als Bestand ($mengeAlt)");
-        }
-    }
-
-    // Artikel-Tabelle aktualisieren
-    $stmt = $db->prepare(
-        "UPDATE Artikel
-            SET Menge = ?
-          WHERE Artikelnummer = ?");
-    $stmt->bind_param("ii", $mengeNeu, $artNr);
-    $stmt->execute();
-    $stmt->close();
-
-    //Eintrag in articleTransactions
-    $now = date('Y-m-d H:i:s');
-    $log = $db->prepare(
-        "INSERT INTO ArticleTransactions
-                (articleID, transactionPrice, transactionAmount, transactionTimestamp, transactionType)
-         VALUES (?,        ?,                ?,                 ?,                   ?)");
-    $log->bind_param("idiss",                  
-                     $artNr,
-                     $transactionPrice,
-                     $transactionAmount,
-                     $now,
-                     $transactionType);
-    $log->execute();
-    $log->close();
-
-    $db->commit();
-
-    echo json_encode(['success'=>true, 'mengeNeu'=>$mengeNeu]);
-
-} catch (Exception $e) {
-    if (isset($db)) $db->rollback();
+if ($response === false) {
     http_response_code(500);
-    echo json_encode(['success'=>false, 'msg'=>$e->getMessage()]);
+    echo json_encode(['success'=>false, 'msg'=>'Keine Verbindung zum Backend-Server.']);
+    exit;
 }
+
+// Backend-Antwort direkt weitergeben
+http_response_code(isset($http_response_header) && preg_grep('/^HTTP\/.*\s(\d{3})/', $http_response_header) ? (int)preg_replace('/\D/', '', $http_response_header[0]) : 200);
+echo $response;

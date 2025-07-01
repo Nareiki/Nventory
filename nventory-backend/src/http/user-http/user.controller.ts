@@ -48,16 +48,32 @@ export class UserController {
         if (!user) {
             throw new BadRequestException('Invalid username or password');
         }
-        const isMatch = await this.userService.comparePassword(loginDto.password, user.userPassword);
+        const isMatch = await this.userService.comparePassword(loginDto.password, user.password);
         if (!isMatch) {
             throw new BadRequestException('Invalid username or password');
         }
         // Create JWT token
-        const payload = { sub: user.userID, username: user.userName };
+        const payload = { sub: user.userID, username: user.username };
         const token = this.jwtService.sign(payload);
         // Return token and user info (omit password)
-        const { userPassword, ...userWithoutPassword } = user;
+        const { password, ...userWithoutPassword } = user;
         return { token, user: userWithoutPassword };
+    }
+
+    @Post('register')
+    async register(@Body() createUserDto: CreateUserDto) {
+        // Explicitly map all required fields for DB compatibility
+        const userToCreate = {
+            username: createUserDto.username,
+            password: createUserDto.password,
+            firstname: createUserDto.firstname,
+            lastname: createUserDto.lastname,
+            email: createUserDto.email,
+            company: createUserDto.company,
+            warehouseID: createUserDto.warehouseID,
+            status: createUserDto.status ?? true
+        };
+        return this.userService.create(userToCreate);
     }
 }
 

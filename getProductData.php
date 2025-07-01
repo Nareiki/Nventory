@@ -1,5 +1,4 @@
 <?php
-require_once 'connection.php';
 header('Content-Type: text/html; charset=utf-8');
 
 // Prüfen Eingabe des Users im Scanner
@@ -16,42 +15,27 @@ if ($artikelnummer <= 0) {
     exit;
 }
 
-//Fragen Datenbank ab
-try {
-    $db = getDBConnection();
-
-    $stmt = $db->prepare("
-        SELECT Artikelnummer, Produktname, Information, Menge, Kaufpreis
-        FROM Artikel
-        WHERE Artikelnummer = ?
-    ");
-    $stmt->bind_param('i', $artikelnummer);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($row = $result->fetch_assoc()) {
-
-    
-        // Liefern danach Kurzinfo über die Aktualisierung und des Artikels als HTML Snippet zurück
-        ?>
-        <div class="articleBox">
-            <h3>Artikel #<?= htmlspecialchars($row['Artikelnummer']) ?></h3>
-            <ul>
-                <li><strong>Name:</strong> <?= htmlspecialchars($row['Produktname']) ?></li>
-                <li><strong>Info:</strong> <?= htmlspecialchars($row['Information'] ?: '-') ?></li>
-                <li><strong>Menge:</strong> <?= (int)$row['Menge'] ?></li>
-                <li><strong>Preis:</strong> <?= number_format($row['Kaufpreis'], 2, ',', '.') ?> €</li>
-            </ul>
-        </div>
-        <?php
-    } else {
-        echo '<p style="color:orange">Kein Artikel gefunden.</p>';
-    }
-
-    $stmt->close();
-    $db->close();
-
-} catch (Exception $e) {
-    http_response_code(500);
-    echo '<p style="color:red">Serverfehler: ' . htmlspecialchars($e->getMessage()) . '</p>';
+// Daten vom Backend holen
+$apiUrl = 'http://localhost:3000/article/' . urlencode($artikelnummer);
+$apiResponse = @file_get_contents($apiUrl);
+if (!$apiResponse) {
+    echo '<p style="color:red">Keine Verbindung zum Backend-Server.</p>';
+    exit;
 }
+$article = json_decode($apiResponse, true);
+if (!$article || !is_array($article)) {
+    echo '<p style="color:orange">Kein Artikel gefunden.</p>';
+    exit;
+}
+?>
+<div class="articleBox">
+    <h3>Artikel #<?= htmlspecialchars($article['Artikelnummer'] ?? $article['articleID']) ?></h3>
+    <ul>
+        <li><strong>Name:</strong> <?= htmlspecialchars($article['Produktname'] ?? $article['articleName']) ?></li>
+        <li><strong>Info:</strong> <?= htmlspecialchars($article['Information'] ?? $article['articleInfo'] ?? '-') ?>
+        </li>
+        <li><strong>Menge:</strong> <?= (int)($article['Menge'] ?? $article['articleAmount']) ?></li>
+        <li><strong>Preis:</strong>
+            <?= number_format($article['Kaufpreis'] ?? $article['purchasePrice'] ?? 0, 2, ',', '.') ?> €</li>
+    </ul>
+</div>
